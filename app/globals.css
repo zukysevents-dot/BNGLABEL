@@ -1315,6 +1315,111 @@ footer {
   margin-bottom: 5rem;
 }
 
+/* ON-BRAND TRACK LIST (poslech) */
+.track-list {
+  list-style: none;
+  border-top: 1px solid var(--line);
+  margin-bottom: 4rem;
+}
+.track-row {
+  display: grid;
+  grid-template-columns: 48px 56px 1fr 2.5rem;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.25s;
+}
+.track-row:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+.track-play {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.track-play svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  margin-left: 2px;
+}
+.track-row:hover .track-play,
+.track-play:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 0 22px rgba(255, 77, 170, 0.4);
+}
+.track-cover {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg2);
+}
+.track-cover .rel-img-num {
+  position: static;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--cream2);
+}
+.track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.track-title {
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.track-title:hover {
+  color: var(--accent);
+}
+.track-meta {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream2);
+}
+.track-index {
+  font-family: var(--f-display);
+  font-size: 0.7rem;
+  color: var(--cream2);
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .track-row {
+    grid-template-columns: 44px 48px 1fr;
+    gap: 0.9rem;
+  }
+  .track-index {
+    display: none;
+  }
+  .track-play {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 /* FADE IN (scroll reveal) — jemný posun + rozostření */
 .fi {
   opacity: 0;

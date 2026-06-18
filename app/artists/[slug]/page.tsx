@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArtistTracks } from "@/components/ArtistTracks";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { ReleaseCard } from "@/components/ReleaseCard";
 import { Reveal } from "@/components/Reveal";
-import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { artists, getArtist } from "@/data/artists";
 import { getArtistLatestReleases } from "@/lib/spotify";
 
@@ -108,34 +107,9 @@ export default async function ArtistPage({
               Otevřít na Spotify →
             </a>
           </Reveal>
-          <div className="ap-player">
-            <SpotifyEmbed
-              artistId={artist.spotifyArtistId}
-              title={`${artist.name} — Spotify`}
-              height={152}
-            />
-          </div>
 
-          <div className="ap-section-title">
-            <span>Releases</span>
-            <a
-              href={artist.spotifyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-sm"
-            >
-              Spotify →
-            </a>
-          </div>
-
-          <Reveal className="ap-releases">
-            {releases.map((release, i) => (
-              <ReleaseCard
-                key={`${release.title}-${i}`}
-                release={release}
-                fallback={String(i + 1).padStart(2, "0")}
-              />
-            ))}
+          <Reveal>
+            <ArtistTracks releases={releases} />
           </Reveal>
         </div>
       </div>
