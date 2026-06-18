@@ -55,6 +55,10 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable}`}
     >
       <body>
+        {/* předpřipojení ke Spotify pro rychlejší načtení přehrávače */}
+        <link rel="preconnect" href="https://open.spotify.com" />
+        <link rel="preconnect" href="https://i.scdn.co" />
+        <link rel="dns-prefetch" href="https://open.spotify.com" />
         <ScrollProgress />
         {children}
         <PlayerBar />
