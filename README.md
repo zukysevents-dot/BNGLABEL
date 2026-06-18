@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bonghemia Label — web
 
-## Getting Started
+Web brněnského independent labelu **Bonghemia Label**. Next.js (App Router) +
+TypeScript + Tailwind CSS. Tmavá, prémiová vizuální identita, připravená na
+napojení Spotify API.
 
-First, run the development server:
+## Spuštění lokálně
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Další skripty:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build    # produkční build
+npm run start    # spuštění produkčního buildu
+npm run lint     # ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Struktura
 
-## Learn More
+```
+app/
+  page.tsx                  # landing (skládá všechny sekce)
+  artists/[slug]/page.tsx   # detail umělce
+  api/spotify/route.ts      # server route → Spotify nebo mock fallback
+components/                 # UI sekce a prvky
+data/artists.ts             # mock data + typy (umělci, releasy, koncerty, partneři)
+lib/spotify.ts              # server-only Spotify klient (+ fallback na mock)
+lib/useInView.ts            # scroll-reveal hook
+public/placeholders/        # sem reálné fotky/obaly (viz README uvnitř)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Spotify (volitelné)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Web jede i bez Spotify — používá mock data z `data/artists.ts`. Pro napojení
+reálných releasů:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Vytvoř appku na <https://developer.spotify.com/dashboard>.
+2. Zkopíruj `.env.example` na `.env.local` a vyplň `SPOTIFY_CLIENT_ID` a
+   `SPOTIFY_CLIENT_SECRET`.
+3. V `data/artists.ts` vyplň reálná `spotifyArtistId` u jednotlivých umělců.
 
-## Deploy on Vercel
+Credentials se čtou **jen na serveru** (`lib/spotify.ts`, `server-only`) a nikdy
+se neposílají do prohlížeče.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Endpoint: `GET /api/spotify` (celý label) nebo `GET /api/spotify?artist=<slug>`.
+Odpověď obsahuje `source: "mock" | "spotify"`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Stav obsahu (co je ověřené / co dodá klient)
+
+**Ověřeno z veřejných zdrojů (snapshot 18. 6. 2026):**
+- **Umělci** — jména, bia, žánry, **reálná Spotify Artist ID** + diskografie a obaly
+  (Spotify CDN).
+- **Statistiky labelu** (`labelStats`) — z veřejných Spotify profilů:
+  `1M+` streamů (konzervativní spodní odhad: součet přehrání top skladeb > 1 mil.),
+  `5` umělců, `18K+` měsíčních posluchačů (součet ~18 574). **Čísla se v čase mění** —
+  občas přepočítat.
+- **Instagramy** — Yambro [`@vaneskayambro`], DOC BNG [`@docskibng`],
+  Stiff Jangle [`@stiffjangle`] (ověřené). Label → [`@bonghemia`].
+- **Affiliation** — opraveno na „Independent Label" (vazba na Warner Music Group
+  se **nepotvrdila**; předloha ji uváděla mylně).
+
+**K dodání / potvrzení klientem:**
+- **Instagram pro Nell O'Donnell a mladeyvlk** — nepodařilo se spolehlivě dohledat
+  (`instagramUrl: null`). Doplnit v `data/artists.ts`.
+- **Footer Spotify/YouTube** — zatím vyhledávací odkazy; nahradit přesnou URL
+  profilu/kanálu labelu (`contact.spotifyUrl`, `contact.youtubeUrl`).
+- **Rok založení „Est. 2020"** (`contact.established`) — neověřeno, potvrdit.
+- **Aktuální single** (`featuredSingle`) — placeholder „Název / Singlu".
+- **Koncerty** (`concerts`) — část placeholder (Název místa, Umělec Jeden…).
+- **Projekty / kolaborace** (`collabs`) — placeholder názvy (Projekt Alfa…).
+- **Fotky umělců** — zatím iniciály; pro reálné nastav `image` u umělce.
+- **Logo** — `components/Monogram.tsx` (heraldický znak); vyměnit za finální asset.
