@@ -9,6 +9,10 @@ import { Reveal } from "@/components/Reveal";
 import { artists, getArtist } from "@/data/artists";
 import { getArtistLatestReleases } from "@/lib/spotify";
 
+// ISR: detail se přegeneruje max. jednou za hodinu → nová alba/tracky umělce
+// ze Spotify se objeví automaticky, vždy seřazené od nejnovějšího.
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return artists.map((a) => ({ slug: a.slug }));
 }

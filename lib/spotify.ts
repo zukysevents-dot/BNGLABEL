@@ -102,16 +102,20 @@ export async function getArtistLatestReleases(
     const data = (await res.json()) as { items: SpotifyAlbum[] };
     const artist = artists.find((a) => a.slug === artistSlug);
 
-    return data.items.map((album) => ({
-      type: normalizeType(album.album_type),
-      title: album.name,
-      year: album.release_date.slice(0, 4),
-      cover: album.images[0]?.url ?? null,
-      artistName: artist?.name ?? album.artists[0]?.name ?? "",
-      artistSlug,
-      artistSpotifyId: spotifyArtistId,
-      spotifyUrl: album.external_urls.spotify,
-    }));
+    return data.items
+      .map((album) => ({
+        type: normalizeType(album.album_type),
+        title: album.name,
+        year: album.release_date.slice(0, 4),
+        releaseDate: album.release_date,
+        cover: album.images[0]?.url ?? null,
+        artistName: artist?.name ?? album.artists[0]?.name ?? "",
+        artistSlug,
+        artistSpotifyId: spotifyArtistId,
+        spotifyUrl: album.external_urls.spotify,
+      }))
+      // vždy seřazeno od nejnovějšího vydání
+      .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate));
   } catch {
     return releasesByArtist(artistSlug);
   }
@@ -119,17 +123,19 @@ export async function getArtistLatestReleases(
 
 /** Poslední releasy celého labelu. Bez creds vrací mock (kurátorovaný výběr). */
 export async function getLabelLatestReleases(limit = 4): Promise<Release[]> {
+  const byDateDesc = (a: Release, b: Release) =>
+    b.releaseDate.localeCompare(a.releaseDate);
+
   if (!hasSpotifyCredentials()) {
-    return latestReleases.slice(0, limit);
+    return [...latestReleases].sort(byDateDesc).slice(0, limit);
   }
 
   const perArtist = await Promise.all(
-    artists.map((a) => getArtistLatestReleases(a.spotifyArtistId, a.slug, 4)),
+    artists.map((a) => getArtistLatestReleases(a.spotifyArtistId, a.slug, 6)),
   );
   const all = perArtist.flat();
-  if (all.length === 0) return latestReleases.slice(0, limit);
+  if (all.length === 0) return [...latestReleases].sort(byDateDesc).slice(0, limit);
 
-  return all
-    .sort((a, b) => b.year.localeCompare(a.year))
-    .slice(0, limit);
+  // nejnovější release každého umělce, pak celé seřazené podle data
+  return all.sort(byDateDesc).slice(0, limit);
 }

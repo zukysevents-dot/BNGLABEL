@@ -1478,6 +1478,7 @@ footer {
 .player-loading {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;

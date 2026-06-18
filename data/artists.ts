@@ -30,6 +30,8 @@ export interface Release extends DiscographyItem {
   /** Spotify Artist ID — pro vložený přehrávač (embed). */
   artistSpotifyId: string;
   spotifyUrl: string;
+  /** Plné datum vydání (ISO) — pro spolehlivé řazení podle data. */
+  releaseDate: string;
 }
 
 export interface Artist {
@@ -186,10 +188,10 @@ export const artists: Artist[] = [
 
 /** Kurátorovaný výběr pro sekci „Poslední releases" na úvodní stránce. */
 export const latestReleases: Release[] = [
-  { type: "Album", title: "Aj tak sa na ten FAKIN LAJF", year: "2026", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab", artistName: "Yambro", artistSlug: "yambro", artistSpotifyId: "5ZqdxN3WMMM2nvUg7lyfJg", spotifyUrl: "https://open.spotify.com/artist/5ZqdxN3WMMM2nvUg7lyfJg" },
-  { type: "Single", title: "DOCSKIHO DIÁR", year: "2026", bg: "#14100f", cover: "https://i.scdn.co/image/ab67616d0000b273969d55d9a60d47f1c019ab32", artistName: "DOC BNG", artistSlug: "doc-bng", artistSpotifyId: "14KzTbCRtiDfrN5dcAHunx", spotifyUrl: "https://open.spotify.com/artist/14KzTbCRtiDfrN5dcAHunx" },
-  { type: "Single", title: "Žijeme Dropem", year: "2026", bg: "#141014", cover: "https://i.scdn.co/image/ab67616d0000b273bdd4f79a11fb723bac2058e7", artistName: "Stiff Jangle", artistSlug: "stiff-jangle", artistSpotifyId: "2Y9DcJmnY2NAHl6HbolRCJ", spotifyUrl: "https://open.spotify.com/artist/2Y9DcJmnY2NAHl6HbolRCJ" },
-  { type: "Single", title: "Malaga", year: "2025", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b", artistName: "mladeyvlk", artistSlug: "mladeyvlk", artistSpotifyId: "2w2XRFHOJLgsKFD62kGN5G", spotifyUrl: "https://open.spotify.com/artist/2w2XRFHOJLgsKFD62kGN5G" },
+  { type: "Album", title: "Aj tak sa na ten FAKIN LAJF", year: "2026", releaseDate: "2026-02-20", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab", artistName: "Yambro", artistSlug: "yambro", artistSpotifyId: "5ZqdxN3WMMM2nvUg7lyfJg", spotifyUrl: "https://open.spotify.com/artist/5ZqdxN3WMMM2nvUg7lyfJg" },
+  { type: "Single", title: "DOCSKIHO DIÁR", year: "2026", releaseDate: "2026-01-15", bg: "#14100f", cover: "https://i.scdn.co/image/ab67616d0000b273969d55d9a60d47f1c019ab32", artistName: "DOC BNG", artistSlug: "doc-bng", artistSpotifyId: "14KzTbCRtiDfrN5dcAHunx", spotifyUrl: "https://open.spotify.com/artist/14KzTbCRtiDfrN5dcAHunx" },
+  { type: "Single", title: "Žijeme Dropem", year: "2026", releaseDate: "2026-03-06", bg: "#141014", cover: "https://i.scdn.co/image/ab67616d0000b273bdd4f79a11fb723bac2058e7", artistName: "Stiff Jangle", artistSlug: "stiff-jangle", artistSpotifyId: "2Y9DcJmnY2NAHl6HbolRCJ", spotifyUrl: "https://open.spotify.com/artist/2Y9DcJmnY2NAHl6HbolRCJ" },
+  { type: "Single", title: "Malaga", year: "2025", releaseDate: "2025-07-11", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b", artistName: "mladeyvlk", artistSlug: "mladeyvlk", artistSpotifyId: "2w2XRFHOJLgsKFD62kGN5G", spotifyUrl: "https://open.spotify.com/artist/2w2XRFHOJLgsKFD62kGN5G" },
 ];
 
 /** Aktuální single (sekce Featured). Placeholder dle předlohy — k vyplnění. */
@@ -251,5 +253,7 @@ export function releasesByArtist(slug: string): Release[] {
     artistSlug: artist.slug,
     artistSpotifyId: artist.spotifyArtistId,
     spotifyUrl: artist.spotifyUrl,
+    // mock nemá plné datum → odhad z roku (reálná data ze Spotify mají přesné)
+    releaseDate: `${d.year}-01-01`,
   }));
 }

@@ -10,6 +10,10 @@ import { Nav } from "@/components/Nav";
 import { Releases } from "@/components/Releases";
 import { Roster } from "@/components/Roster";
 
+// ISR: stránka se přegeneruje max. jednou za hodinu → nové releasy ze Spotify
+// naběhnou automaticky bez nového deploye.
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <>
