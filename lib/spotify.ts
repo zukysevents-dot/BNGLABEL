@@ -139,3 +139,32 @@ export async function getLabelLatestReleases(limit = 4): Promise<Release[]> {
   // nejnovější release každého umělce, pak celé seřazené podle data
   return all.sort(byDateDesc).slice(0, limit);
 }
+
+/**
+ * Nejnovější SINGL napříč všemi umělci (kdokoli vydal naposled).
+ * Bez creds vrací nejnovější singl z mock dat. Drží se aktuální (ISR + Spotify).
+ */
+export async function getLatestSingle(): Promise<Release | null> {
+  const byDateDesc = (a: Release, b: Release) =>
+    b.releaseDate.localeCompare(a.releaseDate);
+
+  let pool: Release[];
+  if (hasSpotifyCredentials()) {
+    const perArtist = await Promise.all(
+      artists.map((a) => getArtistLatestReleases(a.spotifyArtistId, a.slug, 12)),
+    );
+    pool = perArtist.flat();
+  } else {
+    pool = [
+      ...latestReleases,
+      ...artists.flatMap((a) => releasesByArtist(a.slug)),
+    ];
+  }
+
+  const singles = pool
+    .filter((r) => r.type === "Single")
+    .sort(byDateDesc);
+
+  // fallback: kdyby žádný singl nebyl, vezmi nejnovější release
+  return singles[0] ?? pool.sort(byDateDesc)[0] ?? null;
+}
