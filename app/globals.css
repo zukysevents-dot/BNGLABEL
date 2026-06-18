@@ -1421,6 +1421,7 @@ footer {
   color: var(--accent);
 }
 .ap-player {
+  max-width: 540px;
   margin-bottom: 4rem;
 }
 

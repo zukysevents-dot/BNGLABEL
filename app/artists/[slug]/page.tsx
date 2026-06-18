@@ -108,9 +108,13 @@ export default async function ArtistPage({
               Otevřít na Spotify →
             </a>
           </Reveal>
-          <Reveal className="ap-player">
-            <SpotifyEmbed artistId={artist.spotifyArtistId} title={`${artist.name} — Spotify`} />
-          </Reveal>
+          <div className="ap-player">
+            <SpotifyEmbed
+              artistId={artist.spotifyArtistId}
+              title={`${artist.name} — Spotify`}
+              height={152}
+            />
+          </div>
 
           <div className="ap-section-title">
             <span>Releases</span>
