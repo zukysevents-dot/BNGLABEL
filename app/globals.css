@@ -206,16 +206,13 @@ nav.scrolled {
    rozsvěcí a zase ztmavuje — jas řídí JS přes --glow (rychlost scrollu).
    --p (0→1) = drift/blur/fade. */
 .hero-symbol {
-  --p: 0;
   position: fixed;
   right: 4%;
   top: 50%;
   width: min(40vw, 540px);
   pointer-events: none;
   z-index: 4;
-  transform: translateY(calc(-50% + var(--p) * 170px));
-  filter: blur(calc(var(--p) * 7px));
-  opacity: calc(1 - var(--p));
+  transform: translateY(-50%); /* domácí pozice; JS řídí let inline */
   will-change: transform, filter, opacity;
 }
 .hero-symbol-inner {
@@ -505,6 +502,55 @@ nav.scrolled {
   justify-content: center;
   padding: 3rem;
   color: var(--white);
+  position: relative;
+}
+/* růžový „wow" záblesk ve chvíli, kdy se horní znak spojí s tímto (.flash) */
+.about-symbol::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60%;
+  height: 60%;
+  transform: translate(-50%, -50%) scale(0.5);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 109, 191, 0.7),
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+.about-symbol.flash::after {
+  animation: aboutBurst 0.8s ease-out;
+}
+.about-symbol.flash svg {
+  animation: aboutPulse 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes aboutBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  35% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.6);
+  }
+}
+@keyframes aboutPulse {
+  0% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(1.09);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .about-symbol svg {
   width: min(40vh, 340px, 62vw);
