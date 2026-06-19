@@ -224,60 +224,20 @@ nav.scrolled {
   display: block;
   color: rgba(255, 255, 255, 0.1);
 }
-/* lehoučký růžový OBRYS loga; nahoře je oddělený a při scrollu SPLYNE s logem
-   (--c: 0 = oddělený, 1 = spojený). Jemně bliká (logo zůstává tmavé). */
+/* lehoučký růžový neonový OBRYS přesně na logu (logo zůstává tmavé), jemně bliká */
 .hero-symbol-glow {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: block;
   color: var(--accent);
-  filter: drop-shadow(0 0 4px rgba(255, 77, 170, 0.65));
+  filter: drop-shadow(0 0 4px rgba(255, 77, 170, 0.6));
   mix-blend-mode: screen;
-  transform: translate(
-      calc((1 - var(--c, 0)) * 26px),
-      calc((1 - var(--c, 0)) * -34px)
-    )
-    scale(calc(1 + (1 - var(--c, 0)) * 0.1));
   animation: crestFlicker 6s linear infinite;
 }
 .hero-symbol svg {
   width: 100%;
   height: auto;
-}
-/* růžový záblesk ve chvíli splynutí (.merged) */
-.hero-symbol-burst {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 0;
-  width: 65%;
-  height: 65%;
-  border-radius: 50%;
-  background: radial-gradient(
-    closest-side,
-    rgba(255, 77, 170, 0.55),
-    transparent 70%
-  );
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.4);
-  pointer-events: none;
-}
-.hero-symbol.merged .hero-symbol-burst {
-  animation: mergeBurst 0.7s ease-out;
-}
-@keyframes mergeBurst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.4);
-  }
-  35% {
-    opacity: 0.95;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.4);
-  }
 }
 /* plynulé blikání obrysu — 0 % i 100 % stejné = bez „divného" cuknutí na konci */
 @keyframes crestFlicker {
