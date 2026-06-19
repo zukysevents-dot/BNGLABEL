@@ -36,8 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
-# local tooling (preview launch config)
+# local tooling (preview launch config, MCP config)
 .claude/
+.mcp.json
 
 # typescript
 *.tsbuildinfo
