@@ -19,7 +19,11 @@ export function HeroSymbol() {
     const reduce = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     )?.matches;
-    if (reduce) return;
+    if (reduce) {
+      // bez animací necháme dolní znak rovnou rozsvícený (statika)
+      document.querySelector(".about-symbol")?.classList.add("lit");
+      return;
+    }
 
     const target = document.querySelector<SVGElement>(".about-symbol svg");
     const targetWrap = target?.closest(".about-symbol") as HTMLElement | null;
@@ -61,10 +65,10 @@ export function HeroSymbol() {
       // „wow“ záblesk ve chvíli spojení (na dolním znaku)
       if (t >= 0.94 && !merged) {
         merged = true;
-        targetWrap?.classList.add("flash");
+        targetWrap?.classList.add("lit");
       } else if (t < 0.85 && merged) {
         merged = false;
-        targetWrap?.classList.remove("flash");
+        targetWrap?.classList.remove("lit");
       }
     };
     const onScroll = () => {

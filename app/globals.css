@@ -211,7 +211,7 @@ nav.scrolled {
   top: 50%;
   width: min(40vw, 540px);
   pointer-events: none;
-  z-index: 4;
+  z-index: 1; /* za texty (hero-bottom je z-index 2) — nepřekrývá je */
   transform: translateY(-50%); /* domácí pozice; JS řídí let inline */
   will-change: transform, filter, opacity;
 }
@@ -522,11 +522,16 @@ nav.scrolled {
   opacity: 0;
   pointer-events: none;
 }
-.about-symbol.flash::after {
+.about-symbol.lit::after {
   animation: aboutBurst 0.8s ease-out;
 }
-.about-symbol.flash svg {
+.about-symbol.lit svg {
   animation: aboutPulse 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  /* zapnutá růžová záře — až když k logu dorazí horní znak */
+  filter: drop-shadow(0 0 6px rgba(255, 77, 170, 0.63))
+    drop-shadow(0 0 18px rgba(255, 77, 170, 0.42))
+    drop-shadow(0 0 42px rgba(255, 77, 170, 0.21))
+    drop-shadow(0 0 84px rgba(255, 77, 170, 0.11));
 }
 @keyframes aboutBurst {
   0% {
@@ -555,10 +560,9 @@ nav.scrolled {
 .about-symbol svg {
   width: min(40vh, 340px, 62vw);
   height: auto;
-  filter: drop-shadow(0 0 6px rgba(255, 77, 170, 0.63))
-    drop-shadow(0 0 18px rgba(255, 77, 170, 0.42))
-    drop-shadow(0 0 42px rgba(255, 77, 170, 0.21))
-    drop-shadow(0 0 84px rgba(255, 77, 170, 0.11));
+  /* bez záře; plynule se rozsvítí, až dorazí horní znak (.lit) */
+  filter: none;
+  transition: filter 0.5s ease;
 }
 .about-body {
   font-size: 1.05rem;
@@ -1670,6 +1674,8 @@ footer {
   }
   .hero-symbol-inner,
   .hero-symbol-glow,
+  .about-symbol.lit::after,
+  .about-symbol.lit svg,
   .hero-scroll-line::after {
     animation: none;
   }
