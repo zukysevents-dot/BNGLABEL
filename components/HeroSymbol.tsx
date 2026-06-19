@@ -30,38 +30,36 @@ export function HeroSymbol() {
       const vw = window.innerWidth;
       const vh = window.innerHeight || 1;
       const w = el.offsetWidth || 1;
+      const sy = window.scrollY;
 
       if (!target) {
-        // fallback bez cílového znaku: jen drift dolů + fade
-        const p = Math.min(window.scrollY / (vh * 1.1), 1);
+        const p = Math.min(sy / (vh * 1.1), 1);
         el.style.transform = `translate(0px, calc(-50% + ${p * 170}px))`;
         el.style.opacity = `${1 - p}`;
         return;
       }
 
       const homeX = vw - vw * 0.04 - w / 2; // domácí střed (right: 4%)
-      const homeY = vh / 2; // top: 50% + translateY(-50%)
-
       const r = target.getBoundingClientRect();
-      const ax = r.left + r.width / 2;
-      const ay = r.top + r.height / 2;
+      // dokumentová pozice dolního znaku → kolik se musí naskrollovat, aby byl
+      // ve středu obrazovky = bod spojení. Postup se počítá od scrollY = 0,
+      // takže znak letí PLYNULE už od první chvíle scrollu (ne skokem).
+      const docCenterY = r.top + sy + r.height / 2;
+      const mergeScrollY = Math.max(docCenterY - vh * 0.5, 1);
+      const t = Math.min(Math.max(sy / mergeScrollY, 0), 1);
+      const e = t * t * (3 - 2 * t); // smoothstep — pomalý start i dojezd
 
-      // postup letu: 0 = dolní znak u spodního okraje, 1 = ve středu obrazovky
-      const t = Math.min(Math.max((vh - ay) / (vh * 0.5), 0), 1);
-      const e = 1 - Math.pow(1 - t, 3); // easeOutCubic
-
-      const tx = (ax - homeX) * e;
-      const ty = (ay - homeY) * e;
-      const scale = 1 + (r.width / w - 1) * e;
-      el.style.transform = `translate(${tx.toFixed(1)}px, calc(-50% + ${ty.toFixed(1)}px)) scale(${scale.toFixed(3)})`;
+      const targetX = r.left + r.width / 2; // vodorovný střed dolního znaku
+      const tx = (targetX - homeX) * e;
+      const scale = 1 + (r.width / w - 1) * e; // zmenší se přesně na dolní znak
+      el.style.transform = `translate(${tx.toFixed(1)}px, -50%) scale(${scale.toFixed(3)})`;
 
       // po spojení se horní znak vytratí (zůstane dolní zářící)
       const fade = Math.min(Math.max((t - 0.9) / 0.1, 0), 1);
       el.style.opacity = (1 - fade).toFixed(3);
-      el.style.filter = `blur(${(t * 1.4).toFixed(2)}px)`;
 
-      // „wow" záblesk ve chvíli spojení (na dolním znaku)
-      if (t >= 0.92 && !merged) {
+      // „wow“ záblesk ve chvíli spojení (na dolním znaku)
+      if (t >= 0.94 && !merged) {
         merged = true;
         targetWrap?.classList.add("flash");
       } else if (t < 0.85 && merged) {
