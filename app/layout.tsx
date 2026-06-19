@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
 import { PlayerBar } from "@/components/PlayerBar";
+import { Preloader } from "@/components/Preloader";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 const spaceGrotesk = Space_Grotesk({
@@ -59,6 +60,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://open.spotify.com" />
         <link rel="preconnect" href="https://i.scdn.co" />
         <link rel="dns-prefetch" href="https://open.spotify.com" />
+        <Preloader />
         <ScrollProgress />
         {children}
         <PlayerBar />

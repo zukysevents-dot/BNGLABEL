@@ -223,9 +223,9 @@ nav.scrolled {
   z-index: 1;
   display: block;
   color: rgba(255, 255, 255, 0.1);
-  animation: heroFloat 9s ease-in-out infinite;
 }
-/* lehoučký růžový OBRYS loga, který jemně bliká (logo samo zůstává tmavé) */
+/* lehoučký růžový OBRYS loga; nahoře je oddělený a při scrollu SPLYNE s logem
+   (--c: 0 = oddělený, 1 = spojený). Jemně bliká (logo zůstává tmavé). */
 .hero-symbol-glow {
   position: absolute;
   inset: 0;
@@ -234,47 +234,79 @@ nav.scrolled {
   color: var(--accent);
   filter: drop-shadow(0 0 4px rgba(255, 77, 170, 0.65));
   mix-blend-mode: screen;
-  animation: heroFloat 9s ease-in-out infinite,
-    crestFlicker 5s ease-in-out infinite;
+  transform: translate(
+      calc((1 - var(--c, 0)) * 26px),
+      calc((1 - var(--c, 0)) * -34px)
+    )
+    scale(calc(1 + (1 - var(--c, 0)) * 0.1));
+  animation: crestFlicker 6s linear infinite;
 }
 .hero-symbol svg {
   width: 100%;
   height: auto;
 }
-@keyframes heroFloat {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
+/* růžový záblesk ve chvíli splynutí (.merged) */
+.hero-symbol-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 77, 170, 0.55),
+    transparent 70%
+  );
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4);
+  pointer-events: none;
+}
+.hero-symbol.merged .hero-symbol-burst {
+  animation: mergeBurst 0.7s ease-out;
+}
+@keyframes mergeBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
   }
-  50% {
-    transform: translateY(-20px) rotate(2deg);
+  35% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.4);
   }
 }
+/* plynulé blikání obrysu — 0 % i 100 % stejné = bez „divného" cuknutí na konci */
 @keyframes crestFlicker {
-  0%,
+  0% {
+    opacity: 0.5;
+  }
+  24% {
+    opacity: 0.72;
+  }
+  30% {
+    opacity: 0.42;
+  }
+  36% {
+    opacity: 0.66;
+  }
+  62% {
+    opacity: 0.56;
+  }
+  82% {
+    opacity: 0.74;
+  }
+  88% {
+    opacity: 0.46;
+  }
+  94% {
+    opacity: 0.62;
+  }
   100% {
-    opacity: 0.4;
-  }
-  18% {
-    opacity: 0.8;
-  }
-  20% {
-    opacity: 0.32;
-  }
-  22% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 0.55;
-  }
-  68% {
-    opacity: 0.85;
-  }
-  70% {
-    opacity: 0.38;
-  }
-  72% {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 }
 .hero-top {
@@ -1784,5 +1816,61 @@ footer {
   }
   .artist-page {
     padding: 0 1.5rem 5rem;
+  }
+}
+
+/* PRELOADER — úvodní načítací obrazovka s logem, která swipne nahoru */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transform: translateY(0);
+  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.preloader.swipe {
+  transform: translateY(-100%);
+}
+.preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.3rem;
+  animation: preIntro 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.preloader-mark {
+  width: 60px;
+  height: auto;
+  color: var(--white);
+  filter: drop-shadow(0 0 20px rgba(255, 77, 170, 0.55));
+}
+.preloader-word {
+  font-family: var(--f-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--cream);
+  padding-left: 0.42em;
+}
+@keyframes preIntro {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    transition-duration: 0.25s;
+  }
+  .preloader-inner {
+    animation: none;
   }
 }
