@@ -3,6 +3,8 @@ interface MonogramProps {
   title?: string;
   /** true = dekorativní (skryté pro čtečky, např. watermark). */
   decorative?: boolean;
+  /** true = jen tenký obrys (stroke) místo výplně. */
+  outline?: boolean;
 }
 
 /**
@@ -14,13 +16,17 @@ export function Monogram({
   className = "",
   title = "Bonghemia",
   decorative = false,
+  outline = false,
 }: MonogramProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 477.96 691.34"
       className={className}
-      fill="currentColor"
+      fill={outline ? "none" : "currentColor"}
+      stroke={outline ? "currentColor" : undefined}
+      strokeWidth={outline ? 9 : undefined}
+      strokeLinejoin={outline ? "round" : undefined}
       role={decorative ? undefined : "img"}
       aria-hidden={decorative || undefined}
       aria-label={decorative ? undefined : title}
