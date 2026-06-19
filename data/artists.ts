@@ -72,15 +72,17 @@ export interface Collab {
 }
 
 /**
- * Statistiky labelu — ověřené z veřejných Spotify profilů (snapshot 18. 6. 2026).
- * `streams` = konzervativní spodní odhad: jen součet přehrání viditelných top
- * skladeb všech 5 umělců přesahuje 1 mil. (samotná Yambro ~895 tis.).
- * `listeners` = součet měsíčních posluchačů (~18 574). Čísla se v čase mění.
+ * Statistiky labelu = SOUČET za všech 5 umělců (veřejné Spotify profily,
+ * snapshot 18. 6. 2026):
+ *   - streams: kombinovaná přehrání top skladeb všech 5 > 1 mil.
+ *   - artists: počet umělců na labelu (5)
+ *   - listeners: SOUČET měsíčních posluchačů všech 5 (8 982 + 2 850 + 1 825 +
+ *     3 911 + 1 006 = 18 574). Čísla se v čase mění.
  */
 export const labelStats = {
   streams: "1M+",
   artists: "5",
-  listeners: "18K+",
+  listeners: "18,5K",
 };
 
 export const artists: Artist[] = [
@@ -94,7 +96,7 @@ export const artists: Artist[] = [
     spotifyUrl: "https://open.spotify.com/artist/5ZqdxN3WMMM2nvUg7lyfJg",
     instagramUrl: "https://instagram.com/vaneskayambro",
     youtubeUrl: null,
-    image: null,
+    image: "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174aa0aed270f1ea195299bde91",
     bio: "Yambro je slovenská zpěvačka a raperka pocházející z Ružomberoku, usazená v Brně. Pod Bonghemia Label od roku 2024. Její hudba kombinuje nezaměnitelný hlas se sebevědomým projevem napříč rapem, jazzem, soulem a R&B. Debutové album Slow Low vydala v roce 2022, širší pozornost získala v soutěži The Mag Wrap v týmu Rytmuse.",
     discography: [
       { type: "Album", title: "Aj tak sa na ten FAKIN LAJF usmievam", year: "2026", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab" },
@@ -117,7 +119,7 @@ export const artists: Artist[] = [
     spotifyUrl: "https://open.spotify.com/artist/14KzTbCRtiDfrN5dcAHunx",
     instagramUrl: "https://instagram.com/docskibng",
     youtubeUrl: null,
-    image: null,
+    image: "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174c186f82551e90f6d9fc583b9",
     bio: "DOC BNG je slovenský rapper a člen Bonghemia Label. Výherce freestyle battle v Praze v roce 2022, díky čemuž se stal oficiálním členem labelu. Tvoří převážně lyrické texty, kde posluchači předává zážitky a emoce prostřednictvím silného flow.",
     discography: [
       { type: "Single", title: "DOCSKIHO DIÁR", year: "2026", bg: "#14100f", cover: "https://i.scdn.co/image/ab67616d0000b273969d55d9a60d47f1c019ab32" },
@@ -137,7 +139,7 @@ export const artists: Artist[] = [
     spotifyUrl: "https://open.spotify.com/artist/6tshCRxTdroRa4OXrfCujW",
     instagramUrl: null,
     youtubeUrl: null,
-    image: null,
+    image: "https://image-cdn-fa.spotifycdn.com/image/ab676161000051748fed89a5ea8facbd87de688d",
     bio: "Nell O'Donnell je brněnský rapper s vlastní sound identitou. Mezi jeho nejposlouchanější tracky patří Poppin, Haf Haf a Brno Southside. Aktivně vydává od roku 2023 a buduje si silnou lokální základnu.",
     discography: [
       { type: "EP", title: "CHATA", year: "2025", bg: "#101418", cover: "https://i.scdn.co/image/ab67616d0000b273e4a4f73a301959613ac31653" },
@@ -156,7 +158,7 @@ export const artists: Artist[] = [
     spotifyUrl: "https://open.spotify.com/artist/2Y9DcJmnY2NAHl6HbolRCJ",
     instagramUrl: "https://instagram.com/stiffjangle/",
     youtubeUrl: null,
-    image: null,
+    image: "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174baff4f7f758b43c50066599a",
     bio: "Stiff Jangle je undergroundový umělec s experimentálním přístupem k hudbě. Drum & Bass MC kombinující různé žánry a abstraktní texty, které nechávají prostor pro interpretaci. Oslovuje posluchače hledající něco originálního a neotřelého.",
     discography: [
       { type: "Single", title: "NO RISK NO FERRARI", year: "2026", bg: "#12100f", cover: "https://i.scdn.co/image/ab67616d0000b273bdd4f79a11fb723bac2058e7" },
@@ -175,7 +177,7 @@ export const artists: Artist[] = [
     spotifyUrl: "https://open.spotify.com/artist/2w2XRFHOJLgsKFD62kGN5G",
     instagramUrl: null,
     youtubeUrl: null,
-    image: null,
+    image: "https://image-cdn-ak.spotifycdn.com/image/ab676161000051744f299d17a9c13296d63cfd7a",
     bio: "mladeyvlk je mladý rapper s vlastním hlasem a energií. Aktivně vydává od roku 2022, mezi jeho nejposlouchanější patří Vtedy, keď sníváš. Pravidelně spolupracuje s ostatními členy Bonghemia Label.",
     discography: [
       { type: "Single", title: "Malaga", year: "2025", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b" },
