@@ -23,7 +23,7 @@ export function CountUp({
   const started = useRef(false);
 
   useEffect(() => {
-    if (!inView || started.current || !match) return;
+    if (!inView || started.current || target <= 0) return;
     started.current = true;
 
     const reduce = window.matchMedia?.(
@@ -46,7 +46,8 @@ export function CountUp({
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [inView, target, duration, match]);
+    // pozn.: `match` NEpatří do závislostí (nový objekt každý render → zamrzlá animace)
+  }, [inView, target, duration]);
 
   if (!match) return <span ref={ref}>{value}</span>;
 

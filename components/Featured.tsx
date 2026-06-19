@@ -1,4 +1,5 @@
 import { Cover } from "@/components/Cover";
+import { PlayButton } from "@/components/PlayButton";
 import { Reveal } from "@/components/Reveal";
 import { getLatestSingle } from "@/lib/spotify";
 
@@ -28,6 +29,10 @@ export async function Featured() {
           ) : (
             "Cover"
           )}
+          <PlayButton
+            artistId={single.artistSpotifyId}
+            label={`${single.title} — ${single.artistName}`}
+          />
         </div>
       </Reveal>
 

@@ -932,6 +932,22 @@ nav.scrolled {
   position: absolute;
   inset: 0;
 }
+.feat-cover {
+  cursor: pointer;
+}
+.feat-cover .rel-play {
+  opacity: 0;
+}
+.feat-cover:hover .rel-play,
+.feat-cover .rel-play:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .feat-cover .rel-play {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.28);
+  }
+}
 .feat-right {
   padding: 6rem 5rem;
   display: flex;
