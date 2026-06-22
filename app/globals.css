@@ -104,10 +104,69 @@ nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .nav-logo-mark svg {
   width: 100%;
   height: auto;
+}
+/* zážeh při „dosednutí" loga z preloaderu (.ignite přidá Preloader) */
+.nav-logo-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 220%;
+  height: 220%;
+  transform: translate(-50%, -50%) scale(0.4);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 109, 191, 0.75),
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-logo-mark.ignite::after {
+  animation: navIgniteBurst 0.9s ease-out;
+}
+.nav-logo-mark.ignite svg {
+  animation: navIgnitePulse 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes navIgniteBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  35% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.8);
+  }
+}
+@keyframes navIgnitePulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(255, 77, 170, 0));
+  }
+  30% {
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 7px rgba(255, 77, 170, 0.9))
+      drop-shadow(0 0 16px rgba(255, 77, 170, 0.55));
+  }
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-logo-mark.ignite::after,
+  .nav-logo-mark.ignite svg {
+    animation: none;
+  }
 }
 .nav-links {
   display: flex;
@@ -1927,7 +1986,7 @@ footer {
   }
 }
 
-/* PRELOADER — úvodní načítací obrazovka s logem, která swipne nahoru */
+/* PRELOADER — logo doletí na navigační znak a ten se zažehne */
 .preloader {
   position: fixed;
   inset: 0;
@@ -1935,14 +1994,21 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  transform: translateY(0);
-  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+  pointer-events: none;
 }
-.preloader.swipe {
-  transform: translateY(-100%);
+/* samostatná vrstva pozadí — rozplyne se a odkryje web (znak letí dál) */
+.preloader-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  opacity: 1;
+  transition: opacity 0.65s ease 0.1s;
+}
+.preloader.fly .preloader-bg {
+  opacity: 0;
 }
 .preloader-inner {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1950,10 +2016,24 @@ footer {
   animation: preIntro 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .preloader-mark {
+  display: block;
   width: 60px;
   height: auto;
   color: var(--white);
   filter: drop-shadow(0 0 20px rgba(255, 77, 170, 0.55));
+  transform-origin: center center;
+  transition:
+    transform 0.8s cubic-bezier(0.76, 0, 0.24, 1),
+    filter 0.6s ease;
+  will-change: transform;
+}
+.preloader-mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.preloader.fly .preloader-mark {
+  filter: drop-shadow(0 0 6px rgba(255, 77, 170, 0.3));
 }
 .preloader-word {
   font-family: var(--f-display);
@@ -1963,6 +2043,10 @@ footer {
   text-transform: uppercase;
   color: var(--cream);
   padding-left: 0.42em;
+  transition: opacity 0.3s ease;
+}
+.preloader.fly .preloader-word {
+  opacity: 0;
 }
 @keyframes preIntro {
   from {
@@ -1975,10 +2059,14 @@ footer {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .preloader {
+  .preloader-bg {
     transition-duration: 0.25s;
+    transition-delay: 0s;
   }
   .preloader-inner {
     animation: none;
+  }
+  .preloader-mark {
+    transition: none;
   }
 }
