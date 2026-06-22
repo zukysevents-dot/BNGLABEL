@@ -31,6 +31,7 @@ export async function Featured() {
           )}
           <PlayButton
             artistId={single.artistSpotifyId}
+            spotifyUrl={single.spotifyUrl}
             label={`${single.title} — ${single.artistName}`}
           />
         </div>

@@ -3,8 +3,25 @@
 import { useEffect, useState } from "react";
 
 interface PlayerState {
+  /** URL konkrétního releasu (album/track). Pokud chybí, hraje se profil umělce. */
+  url?: string;
   artistId: string;
   label: string;
+}
+
+/**
+ * Z URL Spotify entity (`…/album/ID`, `…/track/ID`, `…/artist/ID`) udělá embed.
+ * Reálná data releasu → album/track embed (přehraje přesně ten release).
+ * Mock data / nečitelná URL → fallback na profil umělce (jako dřív).
+ */
+function toEmbedSrc(s: PlayerState): string {
+  const m = s.url?.match(
+    /open\.spotify\.com\/(artist|album|track|playlist|episode|show)\/([A-Za-z0-9]+)/,
+  );
+  const target = m
+    ? `${m[1]}/${m[2]}`
+    : `artist/${s.artistId}`;
+  return `https://open.spotify.com/embed/${target}?utm_source=generator&theme=0`;
 }
 
 /**
@@ -19,7 +36,7 @@ export function PlayerBar() {
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<PlayerState>).detail;
-      if (detail?.artistId) {
+      if (detail?.url || detail?.artistId) {
         setLoaded(false);
         setState(detail);
       }
@@ -43,9 +60,9 @@ export function PlayerBar() {
         <>
           <div className="player-frame">
             <iframe
-              key={state.artistId}
+              key={toEmbedSrc(state)}
               title={`Spotify přehrávač — ${state.label}`}
-              src={`https://open.spotify.com/embed/artist/${state.artistId}?utm_source=generator&theme=0`}
+              src={toEmbedSrc(state)}
               height="152"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               onLoad={() => setLoaded(true)}

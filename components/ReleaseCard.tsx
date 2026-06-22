@@ -21,7 +21,11 @@ export function ReleaseCard({
             fallback={fallback}
           />
         </div>
-        <PlayButton artistId={release.artistSpotifyId} label={label} />
+        <PlayButton
+          artistId={release.artistSpotifyId}
+          spotifyUrl={release.spotifyUrl}
+          label={label}
+        />
       </div>
       <div className="rel-type">{release.type}</div>
       <a

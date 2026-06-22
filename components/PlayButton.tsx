@@ -3,16 +3,21 @@
 /** Spustí spodní Spotify přehrávač. variant: "card" (overlay na obalu) | "track" (kolečko v seznamu). */
 export function PlayButton({
   artistId,
+  spotifyUrl,
   label,
   variant = "card",
 }: {
   artistId: string;
+  /** URL konkrétního releasu (album/track) — přehraje se přesně on. Bez něj fallback na profil umělce. */
+  spotifyUrl?: string;
   label: string;
   variant?: "card" | "track";
 }) {
   const onClick = () => {
     window.dispatchEvent(
-      new CustomEvent("bonghemia:play", { detail: { artistId, label } }),
+      new CustomEvent("bonghemia:play", {
+        detail: { url: spotifyUrl, artistId, label },
+      }),
     );
   };
 

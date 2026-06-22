@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArtistTracks } from "@/components/ArtistTracks";
+import { Cover } from "@/components/Cover";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { PlayButton } from "@/components/PlayButton";
 import { Reveal } from "@/components/Reveal";
 import { artists, getArtist } from "@/data/artists";
 import { getArtistLatestReleases } from "@/lib/spotify";
@@ -41,6 +43,7 @@ export default async function ArtistPage({
     artist.spotifyArtistId,
     artist.slug,
   );
+  const latest = releases[0];
 
   return (
     <>
@@ -99,6 +102,40 @@ export default async function ArtistPage({
               </div>
             </div>
           </Reveal>
+
+          {latest && (
+            <Reveal className="ap-latest">
+              <div className="ap-latest-cover">
+                <Cover
+                  src={latest.cover}
+                  alt={`Obal: ${latest.title}`}
+                  fallback={latest.type}
+                  sizes="(max-width: 900px) 100vw, 360px"
+                />
+                <PlayButton
+                  artistId={latest.artistSpotifyId}
+                  spotifyUrl={latest.spotifyUrl}
+                  label={`${latest.title} — ${latest.artistName}`}
+                />
+              </div>
+              <div className="ap-latest-info">
+                <div className="ap-latest-badge">Poslední release</div>
+                <div className="ap-latest-meta">
+                  {latest.type} · {latest.year}
+                </div>
+                <h2 className="ap-latest-title">{latest.title}</h2>
+                <a
+                  href={latest.spotifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ap-link primary"
+                >
+                  Otevřít na Spotify
+                </a>
+                {/* ODLOŽENO: sem přijde odkaz na nejnovější videoklip, až bude web online */}
+              </div>
+            </Reveal>
+          )}
 
           <Reveal className="ap-section-title">
             <span>Poslech</span>

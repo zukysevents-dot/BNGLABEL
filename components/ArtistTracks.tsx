@@ -19,6 +19,7 @@ export function ArtistTracks({ releases }: { releases: Release[] }) {
         <li className="track-row" key={`${r.title}-${i}`}>
           <PlayButton
             artistId={r.artistSpotifyId}
+            spotifyUrl={r.spotifyUrl}
             label={`${r.title} — ${r.artistName}`}
             variant="track"
           />
