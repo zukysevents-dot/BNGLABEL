@@ -22,6 +22,8 @@
   --accent: #ff4daa;
   --accent2: #ff6dbf;
   --white: #fff;
+  /* poloprůhledný „panel" — propustí gradient z pozadí, ale zůstane čitelný */
+  --panel: rgba(11, 9, 14, 0.55);
   --f-display: var(--f-display-font), "Space Grotesk", sans-serif;
   --f-body: var(--f-body-font), "Inter", sans-serif;
 }
@@ -40,16 +42,39 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Gradientové pozadí celého webu (à la referenční předloha, ale v barvách
+   značky): černá nahoře → fialový opar uprostřed → horký růžovo-červený žár
+   vlevo dole + orchidejová vpravo dole. Fixní, takže se chová jako „tapeta". */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 15% 10%, rgba(255, 77, 170, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 85% 80%, rgba(255, 77, 170, 0.04) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(180, 40, 120, 0.03) 0%, transparent 70%);
+    /* horký růžovo-červený žár vlevo dole (hlavní „hot spot" jako na předloze) */
+    radial-gradient(64% 58% at 15% 86%, rgba(255, 72, 122, 0.62) 0%, rgba(255, 77, 170, 0.3) 32%, rgba(255, 77, 170, 0) 66%),
+    /* orchidejová/magenta vpravo dole */
+    radial-gradient(58% 52% at 82% 90%, rgba(222, 100, 204, 0.42) 0%, rgba(186, 80, 182, 0.18) 44%, rgba(186, 80, 182, 0) 74%),
+    /* fialový opar uprostřed (přechodový pás) */
+    radial-gradient(92% 72% at 50% 56%, rgba(138, 96, 196, 0.4) 0%, rgba(104, 64, 150, 0.16) 50%, rgba(104, 64, 150, 0) 80%),
+    /* růžové nadzvednutí úplně dole uprostřed */
+    radial-gradient(50% 40% at 40% 104%, rgba(255, 109, 191, 0.38) 0%, rgba(255, 109, 191, 0) 70%),
+    /* základ: tmavá nahoře → viditelná fialová → švestková dole */
+    linear-gradient(168deg, #08080a 0%, #0c0a14 26%, #161029 48%, #221334 72%, #271026 100%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Jemné filmové zrno přes celé pozadí (textura jako na předloze). */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
 }
 
 body > * {
@@ -545,7 +570,7 @@ nav.scrolled {
 
 /* ABOUT */
 .about {
-  background: var(--bg2);
+  background: var(--panel);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -837,7 +862,7 @@ nav.scrolled {
 
 /* RELEASES */
 .releases {
-  background: var(--bg2);
+  background: var(--panel);
   border-bottom: 1px solid var(--line);
 }
 .releases-head {
@@ -1054,7 +1079,7 @@ nav.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg2);
+  background: var(--panel);
   position: relative;
   overflow: hidden;
 }
