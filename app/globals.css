@@ -51,15 +51,15 @@ body::before {
   inset: 0;
   background:
     /* horký růžovo-červený žár vlevo dole (hlavní „hot spot" jako na předloze) */
-    radial-gradient(64% 58% at 15% 86%, rgba(255, 72, 122, 0.62) 0%, rgba(255, 77, 170, 0.3) 32%, rgba(255, 77, 170, 0) 66%),
+    radial-gradient(64% 58% at 15% 86%, rgba(255, 72, 122, 0.36) 0%, rgba(255, 77, 170, 0.17) 32%, rgba(255, 77, 170, 0) 66%),
     /* orchidejová/magenta vpravo dole */
-    radial-gradient(58% 52% at 82% 90%, rgba(222, 100, 204, 0.42) 0%, rgba(186, 80, 182, 0.18) 44%, rgba(186, 80, 182, 0) 74%),
+    radial-gradient(58% 52% at 82% 90%, rgba(222, 100, 204, 0.24) 0%, rgba(186, 80, 182, 0.1) 44%, rgba(186, 80, 182, 0) 74%),
     /* fialový opar uprostřed (přechodový pás) */
-    radial-gradient(92% 72% at 50% 56%, rgba(138, 96, 196, 0.4) 0%, rgba(104, 64, 150, 0.16) 50%, rgba(104, 64, 150, 0) 80%),
+    radial-gradient(92% 72% at 50% 56%, rgba(138, 96, 196, 0.23) 0%, rgba(104, 64, 150, 0.09) 50%, rgba(104, 64, 150, 0) 80%),
     /* růžové nadzvednutí úplně dole uprostřed */
-    radial-gradient(50% 40% at 40% 104%, rgba(255, 109, 191, 0.38) 0%, rgba(255, 109, 191, 0) 70%),
+    radial-gradient(50% 40% at 40% 104%, rgba(255, 109, 191, 0.22) 0%, rgba(255, 109, 191, 0) 70%),
     /* základ: tmavá nahoře → viditelná fialová → švestková dole */
-    linear-gradient(168deg, #08080a 0%, #0c0a14 26%, #161029 48%, #221334 72%, #271026 100%);
+    linear-gradient(168deg, #050506 0%, #07060c 26%, #0d0918 48%, #140b1e 72%, #170916 100%);
   pointer-events: none;
   z-index: 0;
 }
