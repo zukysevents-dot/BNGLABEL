@@ -171,14 +171,14 @@ export const artists: Artist[] = [
     id: 5,
     slug: "mladeyvlk",
     initials: "MV",
-    name: "mladeyvlk",
+    name: "Mladeyvlk",
     genre: "Rap / Hip-hop",
     spotifyArtistId: "2w2XRFHOJLgsKFD62kGN5G",
     spotifyUrl: "https://open.spotify.com/artist/2w2XRFHOJLgsKFD62kGN5G",
     instagramUrl: null,
     youtubeUrl: null,
     image: "https://image-cdn-ak.spotifycdn.com/image/ab676161000051744f299d17a9c13296d63cfd7a",
-    bio: "mladeyvlk je mladý rapper s vlastním hlasem a energií. Aktivně vydává od roku 2022, mezi jeho nejposlouchanější patří Vtedy, keď sníváš. Pravidelně spolupracuje s ostatními členy Bonghemia Label.",
+    bio: "Mladeyvlk je mladý rapper s vlastním hlasem a energií. Aktivně vydává od roku 2022, mezi jeho nejposlouchanější patří Vtedy, keď sníváš. Pravidelně spolupracuje s ostatními členy Bonghemia Label.",
     discography: [
       { type: "Single", title: "Malaga", year: "2025", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b" },
       { type: "Single", title: "NABÍHÁM", year: "2025", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273312902213b2fa2144a68de7e" },
@@ -193,7 +193,7 @@ export const latestReleases: Release[] = [
   { type: "Album", title: "Aj tak sa na ten FAKIN LAJF", year: "2026", releaseDate: "2026-02-20", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab", artistName: "Yambro", artistSlug: "yambro", artistSpotifyId: "5ZqdxN3WMMM2nvUg7lyfJg", spotifyUrl: "https://open.spotify.com/artist/5ZqdxN3WMMM2nvUg7lyfJg" },
   { type: "Single", title: "DOCSKIHO DIÁR", year: "2026", releaseDate: "2026-01-15", bg: "#14100f", cover: "https://i.scdn.co/image/ab67616d0000b273969d55d9a60d47f1c019ab32", artistName: "DOC BNG", artistSlug: "doc-bng", artistSpotifyId: "14KzTbCRtiDfrN5dcAHunx", spotifyUrl: "https://open.spotify.com/artist/14KzTbCRtiDfrN5dcAHunx" },
   { type: "Single", title: "Žijeme Dropem", year: "2026", releaseDate: "2026-03-06", bg: "#141014", cover: "https://i.scdn.co/image/ab67616d0000b273bdd4f79a11fb723bac2058e7", artistName: "Stiff Jangle", artistSlug: "stiff-jangle", artistSpotifyId: "2Y9DcJmnY2NAHl6HbolRCJ", spotifyUrl: "https://open.spotify.com/artist/2Y9DcJmnY2NAHl6HbolRCJ" },
-  { type: "Single", title: "Malaga", year: "2025", releaseDate: "2025-07-11", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b", artistName: "mladeyvlk", artistSlug: "mladeyvlk", artistSpotifyId: "2w2XRFHOJLgsKFD62kGN5G", spotifyUrl: "https://open.spotify.com/artist/2w2XRFHOJLgsKFD62kGN5G" },
+  { type: "Single", title: "Malaga", year: "2025", releaseDate: "2025-07-11", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b", artistName: "Mladeyvlk", artistSlug: "mladeyvlk", artistSpotifyId: "2w2XRFHOJLgsKFD62kGN5G", spotifyUrl: "https://open.spotify.com/artist/2w2XRFHOJLgsKFD62kGN5G" },
 ];
 
 /** Aktuální single (sekce Featured). Placeholder dle předlohy — k vyplnění. */
