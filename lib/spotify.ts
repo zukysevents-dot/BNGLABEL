@@ -84,14 +84,17 @@ function normalizeType(albumType: string): ReleaseType {
 export async function getArtistLatestReleases(
   spotifyArtistId: string,
   artistSlug: string,
-  limit = 12,
+  limit = 10,
 ): Promise<Release[]> {
   const token = await getAccessToken();
   if (!token || !spotifyArtistId) return releasesByArtist(artistSlug);
 
   try {
     const res = await fetch(
-      `${API_BASE}/artists/${spotifyArtistId}/albums?include_groups=album,single&market=CZ&limit=${limit}`,
+      // Spotify u tohoto endpointu aktuálně odmítá limit > 10 (400 „Invalid limit"),
+      // i když dokumentace uvádí 50 — proto ho tvrdě ořízneme na 10. Bez toho
+      // by fetch spadl a vše tiše přešlo na mock data.
+      `${API_BASE}/artists/${spotifyArtistId}/albums?include_groups=album,single&market=CZ&limit=${Math.min(limit, 10)}`,
       {
         headers: { Authorization: `Bearer ${token}` },
         next: { revalidate: 3600 },
@@ -151,7 +154,7 @@ export async function getLatestSingle(): Promise<Release | null> {
   let pool: Release[];
   if (hasSpotifyCredentials()) {
     const perArtist = await Promise.all(
-      artists.map((a) => getArtistLatestReleases(a.spotifyArtistId, a.slug, 12)),
+      artists.map((a) => getArtistLatestReleases(a.spotifyArtistId, a.slug, 10)),
     );
     pool = perArtist.flat();
   } else {
