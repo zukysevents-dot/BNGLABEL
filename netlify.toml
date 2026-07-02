@@ -1,0 +1,9 @@
+# Netlify — Next.js 16.
+# Runtime (@netlify/plugin-nextjs) si Netlify přidá automaticky po detekci Next.js,
+# takže tu neřešíme publish adresář ani plugin ručně. Jen build a verze Node
+# (Next 16 vyžaduje Node 20+).
+[build]
+  command = "next build"
+
+[build.environment]
+  NODE_VERSION = "20"
