@@ -9,6 +9,8 @@ import { Nav } from "@/components/Nav";
 import { PlayButton } from "@/components/PlayButton";
 import { Reveal } from "@/components/Reveal";
 import { artists, getArtist } from "@/data/artists";
+import { getDict } from "@/lib/dictionaries";
+import { getLocale } from "@/lib/getLocale";
 import { getArtistLatestReleases } from "@/lib/spotify";
 
 // ISR: detail se přegeneruje max. jednou za hodinu → nová alba/tracky umělce
@@ -39,6 +41,11 @@ export default async function ArtistPage({
   const artist = getArtist(slug);
   if (!artist) notFound();
 
+  const locale = await getLocale();
+  const t = getDict(locale);
+  const bio = locale === "en" ? artist.bioEn ?? artist.bio : artist.bio;
+  const genre = locale === "en" ? artist.genreEn ?? artist.genre : artist.genre;
+
   const releases = await getArtistLatestReleases(
     artist.spotifyArtistId,
     artist.slug,
@@ -47,14 +54,14 @@ export default async function ArtistPage({
 
   return (
     <>
-      <Nav />
+      <Nav locale={locale} nav={t.nav} />
       <div className="artist-view">
         <div className="artist-page">
           <Link href="/#artists" className="ap-back">
             <svg viewBox="0 0 24 24" aria-hidden>
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            Zpět na roster
+            {t.artist.back}
           </Link>
 
           <Reveal className="ap-hero">
@@ -67,9 +74,9 @@ export default async function ArtistPage({
               )}
             </div>
             <div className="ap-info">
-              <div className="ap-genre-tag">{artist.genre}</div>
+              <div className="ap-genre-tag">{genre}</div>
               <h1 className="ap-name">{artist.name}</h1>
-              <p className="ap-bio">{artist.bio}</p>
+              <p className="ap-bio">{bio}</p>
               <div className="ap-links">
                 <a
                   href={artist.spotifyUrl}
@@ -119,7 +126,7 @@ export default async function ArtistPage({
                 />
               </div>
               <div className="ap-latest-info">
-                <div className="ap-latest-badge">Poslední release</div>
+                <div className="ap-latest-badge">{t.artist.latest}</div>
                 <div className="ap-latest-meta">
                   {latest.type} · {latest.year}
                 </div>
@@ -130,7 +137,7 @@ export default async function ArtistPage({
                   rel="noopener noreferrer"
                   className="ap-link primary"
                 >
-                  Otevřít na Spotify
+                  {t.artist.openSpotify}
                 </a>
                 {/* ODLOŽENO: sem přijde odkaz na nejnovější videoklip, až bude web online */}
               </div>
@@ -138,14 +145,14 @@ export default async function ArtistPage({
           )}
 
           <Reveal className="ap-section-title">
-            <span>Poslech</span>
+            <span>{t.artist.listen}</span>
             <a
               href={artist.spotifyUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="link-sm"
             >
-              Otevřít na Spotify →
+              {t.artist.openSpotifyArrow}
             </a>
           </Reveal>
 

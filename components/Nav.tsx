@@ -3,17 +3,28 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { LangSwitch } from "@/components/LangSwitch";
 import { Monogram } from "@/components/Monogram";
+import { getDict, type Dict, type Locale } from "@/lib/dictionaries";
 
-const LINKS = [
-  { href: "/#about", label: "Label" },
-  { href: "/#artists", label: "Umělci" },
-  { href: "/#releases", label: "Releases" },
-];
-
-export function Nav() {
+export function Nav({
+  locale = "cs",
+  nav,
+}: {
+  locale?: Locale;
+  nav?: Dict["nav"];
+}) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Fallback, kdyby prop nedorazil (např. při HMR / neúplném renderu) — Nav nikdy nespadne.
+  const t = nav ?? getDict(locale).nav;
+
+  const links = [
+    { href: "/#about", label: t.label },
+    { href: "/#artists", label: t.artists },
+    { href: "/#releases", label: t.releases },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -38,46 +49,50 @@ export function Nav() {
         Bonghemia
       </Link>
 
-      <ul className="nav-links">
-        {LINKS.map((l) => (
-          <li key={l.href}>
-            <Link href={l.href}>{l.label}</Link>
+      <div className="nav-right">
+        <ul className="nav-links">
+          {links.map((l) => (
+            <li key={l.href}>
+              <Link href={l.href}>{l.label}</Link>
+            </li>
+          ))}
+          <li>
+            <Link href="/#contact" className="nav-cta">
+              {t.contact}
+            </Link>
           </li>
-        ))}
-        <li>
-          <Link href="/#contact" className="nav-cta">
-            Kontakt
-          </Link>
-        </li>
-      </ul>
+        </ul>
 
-      <button
-        type="button"
-        className="nav-burger"
-        aria-expanded={open}
-        aria-controls="mobile-menu"
-        aria-label={open ? "Zavřít menu" : "Otevřít menu"}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span>
-          <i />
-          <i />
-          <i />
-        </span>
-      </button>
+        <LangSwitch locale={locale} />
+
+        <button
+          type="button"
+          className="nav-burger"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Zavřít menu" : "Otevřít menu"}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span>
+            <i />
+            <i />
+            <i />
+          </span>
+        </button>
+      </div>
 
       <div
         id="mobile-menu"
         className={`mobile-menu ${open ? "open" : ""}`}
         aria-hidden={!open}
       >
-        {LINKS.map((l) => (
+        {links.map((l) => (
           <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>
             {l.label}
           </Link>
         ))}
         <Link href="/#contact" className="nav-cta" onClick={() => setOpen(false)}>
-          Kontakt
+          {t.contact}
         </Link>
       </div>
     </nav>

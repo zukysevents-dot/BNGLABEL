@@ -41,6 +41,8 @@ export interface Artist {
   name: string;
   /** Zobrazovaný řetězec žánrů, např. "Rap / Jazz / Soul / R&B". */
   genre: string;
+  /** EN varianta žánru (nepovinná; fallback na `genre`). */
+  genreEn?: string;
   /** Spotify Artist ID (reálné — funguje s /api/spotify). */
   spotifyArtistId: string;
   spotifyUrl: string;
@@ -49,6 +51,8 @@ export interface Artist {
   /** Fotka umělce (v `public/`) nebo URL. `null` → iniciály jako fallback. */
   image: string | null;
   bio: string;
+  /** EN varianta bio (nepovinná; fallback na `bio`). */
+  bioEn?: string;
   discography: DiscographyItem[];
 }
 
@@ -98,6 +102,7 @@ export const artists: Artist[] = [
     youtubeUrl: null,
     image: "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174aa0aed270f1ea195299bde91",
     bio: "Yambro je slovenská zpěvačka a raperka pocházející z Ružomberoku, usazená v Brně. Pod Bonghemia Label od roku 2024. Její hudba kombinuje nezaměnitelný hlas se sebevědomým projevem napříč rapem, jazzem, soulem a R&B. Debutové album Slow Low vydala v roce 2022, širší pozornost získala v soutěži The Mag Wrap v týmu Rytmuse.",
+    bioEn: "Yambro is a Slovak singer and rapper from Ružomberok, based in Brno. With Bonghemia Label since 2024. Her music blends an unmistakable voice with a confident delivery across rap, jazz, soul and R&B. She released her debut album Slow Low in 2022 and gained wider attention on Rytmus's team in the The Mag Wrap contest.",
     discography: [
       { type: "Album", title: "Aj tak sa na ten FAKIN LAJF usmievam", year: "2026", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab" },
       { type: "Single", title: "Šepkám", year: "2025", bg: "#12100f", cover: "https://i.scdn.co/image/ab67616d0000b273f968f741eb0ec0efd9f76802" },
@@ -115,12 +120,14 @@ export const artists: Artist[] = [
     initials: "DB",
     name: "DOC BNG",
     genre: "Rap / Lyrický hip-hop",
+    genreEn: "Rap / Lyrical hip-hop",
     spotifyArtistId: "14KzTbCRtiDfrN5dcAHunx",
     spotifyUrl: "https://open.spotify.com/artist/14KzTbCRtiDfrN5dcAHunx",
     instagramUrl: "https://instagram.com/docskibng",
     youtubeUrl: null,
     image: "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174c186f82551e90f6d9fc583b9",
     bio: "DOC BNG je slovenský rapper a člen Bonghemia Label. Výherce freestyle battle v Praze v roce 2022, díky čemuž se stal oficiálním členem labelu. Tvoří převážně lyrické texty, kde posluchači předává zážitky a emoce prostřednictvím silného flow.",
+    bioEn: "DOC BNG is a Slovak rapper and member of Bonghemia Label. Winner of a freestyle battle in Prague in 2022, which made him an official member of the label. He mostly writes lyrical verses, sharing experiences and emotions with the listener through a strong flow.",
     discography: [
       { type: "Single", title: "DOCSKIHO DIÁR", year: "2026", bg: "#14100f", cover: "https://i.scdn.co/image/ab67616d0000b273969d55d9a60d47f1c019ab32" },
       { type: "Single", title: "Exit", year: "2026", bg: "#111215", cover: "https://i.scdn.co/image/ab67616d0000b27315b525600797d4f3c879022e" },
@@ -141,6 +148,7 @@ export const artists: Artist[] = [
     youtubeUrl: null,
     image: "https://image-cdn-fa.spotifycdn.com/image/ab676161000051748fed89a5ea8facbd87de688d",
     bio: "Nell O'Donnell je brněnský rapper s vlastní sound identitou. Mezi jeho nejposlouchanější tracky patří Poppin, Haf Haf a Brno Southside. Aktivně vydává od roku 2023 a buduje si silnou lokální základnu.",
+    bioEn: "Nell O'Donnell is a Brno rapper with his own sonic identity. His most-streamed tracks include Poppin, Haf Haf and Brno Southside. Active since 2023, he's building a strong local following.",
     discography: [
       { type: "EP", title: "CHATA", year: "2025", bg: "#101418", cover: "https://i.scdn.co/image/ab67616d0000b273e4a4f73a301959613ac31653" },
       { type: "Single", title: "BBUHOT", year: "2025", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273df8085fdbeca41b1e106a226" },
@@ -160,6 +168,7 @@ export const artists: Artist[] = [
     youtubeUrl: null,
     image: "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174baff4f7f758b43c50066599a",
     bio: "Stiff Jangle je undergroundový umělec s experimentálním přístupem k hudbě. Drum & Bass MC kombinující různé žánry a abstraktní texty, které nechávají prostor pro interpretaci. Oslovuje posluchače hledající něco originálního a neotřelého.",
+    bioEn: "Stiff Jangle is an underground artist with an experimental approach to music. A drum & bass MC blending genres with abstract lyrics that leave room for interpretation. He speaks to listeners looking for something original and fresh.",
     discography: [
       { type: "Single", title: "NO RISK NO FERRARI", year: "2026", bg: "#12100f", cover: "https://i.scdn.co/image/ab67616d0000b273bdd4f79a11fb723bac2058e7" },
       { type: "Single", title: "Žijeme Dropem", year: "2026", bg: "#141014", cover: "https://i.scdn.co/image/ab67616d0000b2736ec59da0afb4cb612af9550e" },
@@ -179,6 +188,7 @@ export const artists: Artist[] = [
     youtubeUrl: null,
     image: "https://image-cdn-ak.spotifycdn.com/image/ab676161000051744f299d17a9c13296d63cfd7a",
     bio: "Mladeyvlk je mladý rapper s vlastním hlasem a energií. Aktivně vydává od roku 2022, mezi jeho nejposlouchanější patří Vtedy, keď sníváš. Pravidelně spolupracuje s ostatními členy Bonghemia Label.",
+    bioEn: "Mladeyvlk is a young rapper with his own voice and energy. Active since 2022, his most-streamed track is Vtedy, keď sníváš. He regularly collaborates with the other members of Bonghemia Label.",
     discography: [
       { type: "Single", title: "Malaga", year: "2025", bg: "#101410", cover: "https://i.scdn.co/image/ab67616d0000b273b5d7cef1a60eebb83a48e91b" },
       { type: "Single", title: "NABÍHÁM", year: "2025", bg: "#141414", cover: "https://i.scdn.co/image/ab67616d0000b273312902213b2fa2144a68de7e" },
@@ -208,10 +218,8 @@ export const featuredSingle = {
 };
 
 export const concerts: Concert[] = [
-  { date: "14. 8.", day: "Čt", name: "Festival TLAK 2026", venue: "Beach Club Zátoka", city: "Žermanická přehrada", artists: "58G, Rest, Maniak + další", ticket: "https://goout.net", soldOut: false },
-  { date: "22. 8.", day: "So", name: "Open Air Brno", venue: "Název místa", city: "Brno", artists: "Umělec Jeden, Umělec Dva", ticket: "#", soldOut: false },
-  { date: "6. 9.", day: "So", name: "Název Akce", venue: "Klub / Venue", city: "Praha", artists: "Umělec Tři", ticket: "#", soldOut: true },
-  { date: "18. 10.", day: "Ne", name: "Podzimní Show", venue: "Název klubu", city: "Brno", artists: "Label Night", ticket: "#", soldOut: false },
+  { date: "25. 7.", day: "", name: "WARM UP Festival TLAK", venue: "", city: "", artists: "", ticket: "https://instagram.com/festival_tlak", soldOut: false },
+  { date: "14. 8.", day: "Čt", name: "Festival TLAK 2026", venue: "Beach Club Zátoka", city: "Žermanická přehrada", artists: "58G, Rest, Maniak + další", ticket: "https://www.festivaltlak.cz", soldOut: false },
 ];
 
 export const collabs: Collab[] = [

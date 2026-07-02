@@ -1,6 +1,8 @@
 import { Cover } from "@/components/Cover";
 import { PlayButton } from "@/components/PlayButton";
 import { Reveal } from "@/components/Reveal";
+import { getDict } from "@/lib/dictionaries";
+import { getLocale } from "@/lib/getLocale";
 import { getLatestSingle } from "@/lib/spotify";
 
 /**
@@ -10,6 +12,8 @@ import { getLatestSingle } from "@/lib/spotify";
 export async function Featured() {
   const single = await getLatestSingle();
   if (!single) return null;
+
+  const t = getDict(await getLocale()).featured;
 
   const query = encodeURIComponent(`${single.title} ${single.artistName}`);
   const appleUrl = `https://music.apple.com/search?term=${query}`;
@@ -38,14 +42,12 @@ export async function Featured() {
       </Reveal>
 
       <Reveal delay={2} className="feat-right">
-        <div className="feat-badge">Aktuální single</div>
+        <div className="feat-badge">{t.badge}</div>
         <h2 className="feat-title">{single.title}</h2>
         <div className="feat-sub">
           {single.artistName} · {single.year}
         </div>
-        <p className="feat-desc">
-          Nejnovější singl z Bonghemia Label — poslechni si ho na svojí platformě.
-        </p>
+        <p className="feat-desc">{t.desc}</p>
         <div className="feat-platforms">
           <a
             href={single.spotifyUrl}

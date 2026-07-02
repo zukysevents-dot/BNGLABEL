@@ -1,17 +1,21 @@
 import { Reveal } from "@/components/Reveal";
 import { concerts } from "@/data/artists";
+import { getDict } from "@/lib/dictionaries";
+import { getLocale } from "@/lib/getLocale";
 
-export function Concerts() {
+export async function Concerts() {
+  const t = getDict(await getLocale()).concerts;
+
   return (
     <section className="concerts s" style={{ borderBottom: "1px solid var(--line)" }}>
       <div className="max">
         <Reveal className="releases-head">
           <div>
-            <div className="s-num">05 — Live</div>
+            <div className="s-num">{t.num}</div>
             <h2 className="s-title">
-              Nejbližší
+              {t.titleTop}
               <br />
-              <span className="dim">koncerty</span>
+              <span className="dim">{t.titleAccent}</span>
             </h2>
           </div>
         </Reveal>
@@ -30,7 +34,7 @@ export function Concerts() {
               <div className="concert-city">{c.city}</div>
               <div className="concert-artists">{c.artists}</div>
               {c.soldOut ? (
-                <span className="concert-ticket sold-out">Vyprodáno</span>
+                <span className="concert-ticket sold-out">{t.soldOut}</span>
               ) : (
                 <a
                   href={c.ticket}
@@ -38,7 +42,7 @@ export function Concerts() {
                   rel={c.ticket.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="concert-ticket"
                 >
-                  Lístky →
+                  {t.tickets}
                 </a>
               )}
             </div>
