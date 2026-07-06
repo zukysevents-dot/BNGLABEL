@@ -11,7 +11,13 @@ export const defaultLocale: Locale = "cs";
 export const LOCALE_COOKIE = "locale";
 
 const cs = {
-  nav: { label: "Label", artists: "Umělci", releases: "Releases", contact: "Kontakt" },
+  nav: {
+    label: "Label",
+    artists: "Umělci",
+    releases: "Releases",
+    live: "Koncerty",
+    contact: "Kontakt",
+  },
   hero: { tag: "Independent Music Label", scroll: "Scroll down" },
   about: {
     num: "01 — Label",
@@ -23,16 +29,18 @@ const cs = {
   },
   roster: { num: "02 — Roster", title: "Umělci" },
   releases: {
-    num: "04 — Katalog",
+    num: "03 — Katalog",
     titleTop: "Poslední",
     titleAccent: "releases",
     full: "Celý katalog →",
   },
   concerts: {
-    num: "05 — Live",
+    num: "04 — Live",
     titleTop: "Nejbližší",
     titleAccent: "koncerty",
     tickets: "Lístky →",
+    info: "Info →",
+    tba: "Místo bude upřesněno",
     soldOut: "Vyprodáno",
   },
   featured: {
@@ -40,7 +48,7 @@ const cs = {
     desc: "Nejnovější singl z Bonghemia Label — poslechni si ho na svojí platformě.",
   },
   contact: {
-    num: "06 — Kontakt",
+    num: "05 — Kontakt",
     titleTop: "Pojďme",
     titleAccent: "spolupracovat.",
     text: "Tvoříš hudbu nebo chceš začít? Napiš nám. Podporujeme umělce z komunity a posouváme je dál.",
@@ -57,7 +65,13 @@ const cs = {
 export type Dict = typeof cs;
 
 const en: Dict = {
-  nav: { label: "Label", artists: "Artists", releases: "Releases", contact: "Contact" },
+  nav: {
+    label: "Label",
+    artists: "Artists",
+    releases: "Releases",
+    live: "Live",
+    contact: "Contact",
+  },
   hero: { tag: "Independent Music Label", scroll: "Scroll down" },
   about: {
     num: "01 — Label",
@@ -69,16 +83,18 @@ const en: Dict = {
   },
   roster: { num: "02 — Roster", title: "Artists" },
   releases: {
-    num: "04 — Catalog",
+    num: "03 — Catalog",
     titleTop: "Latest",
     titleAccent: "releases",
     full: "Full catalog →",
   },
   concerts: {
-    num: "05 — Live",
+    num: "04 — Live",
     titleTop: "Upcoming",
     titleAccent: "shows",
     tickets: "Tickets →",
+    info: "Info →",
+    tba: "Venue TBA",
     soldOut: "Sold out",
   },
   featured: {
@@ -86,7 +102,7 @@ const en: Dict = {
     desc: "The newest single from Bonghemia Label — listen on your platform.",
   },
   contact: {
-    num: "06 — Contact",
+    num: "05 — Contact",
     titleTop: "Let's",
     titleAccent: "work together.",
     text: "Do you make music or want to start? Write to us. We support artists from the community and push them forward.",

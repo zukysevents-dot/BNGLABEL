@@ -15,7 +15,7 @@ export function Footer() {
         Bonghemia
       </Link>
       <div className="ft-copy">
-        © 2025 Bonghemia Label · Brno ·{" "}
+        © {new Date().getFullYear()} Bonghemia Label · Brno ·{" "}
         <span style={{ color: "rgba(255,255,255,.35)" }}>
           {contact.affiliation}
         </span>

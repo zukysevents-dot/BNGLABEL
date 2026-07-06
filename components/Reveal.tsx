@@ -1,6 +1,6 @@
 "use client";
 
-import type { ElementType, ReactNode } from "react";
+import { useState, type ElementType, type ReactNode } from "react";
 
 import { useInView } from "@/lib/useInView";
 
@@ -12,7 +12,12 @@ interface RevealProps {
   as?: ElementType;
 }
 
-/** Scroll-reveal wrapper — používá .fi/.vis třídy z globals (jako předloha). */
+/**
+ * Scroll-reveal wrapper — používá .fi/.vis třídy z globals (jako předloha).
+ * `.vis` je JEDNORÁZOVÉ (obsah po odhalení už nemizí — žádné opakované
+ * blikání při scrollu nahoru). Živý stav `.in` se přepíná dál a slouží CSS
+ * k pauzování nekonečných animací mimo viewport (viz globals).
+ */
 export function Reveal({
   children,
   className = "",
@@ -20,12 +25,19 @@ export function Reveal({
   as: Tag = "div",
 }: RevealProps) {
   const { ref, inView } = useInView<HTMLDivElement>({ repeat: true });
+  const [seen, setSeen] = useState(false);
   const delayClass = delay ? `fi-d${delay}` : "";
+
+  // „zámek" prvního zobrazení — úprava stavu přímo při renderu (doporučený
+  // React pattern pro odvozený stav, bez efektu navíc)
+  if (inView && !seen) setSeen(true);
 
   return (
     <Tag
       ref={ref}
-      className={`fi ${delayClass} ${inView ? "vis" : ""} ${className}`.trim()}
+      className={`fi ${delayClass} ${seen ? "vis" : ""} ${
+        inView ? "in" : ""
+      } ${className}`.trim()}
     >
       {children}
     </Tag>

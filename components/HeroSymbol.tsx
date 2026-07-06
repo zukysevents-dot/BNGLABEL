@@ -39,6 +39,7 @@ export function HeroSymbol() {
         const p = Math.min(sy / (vh * 1.1), 1);
         el.style.transform = `translate(0px, calc(-50% + ${p * 170}px))`;
         el.style.opacity = `${1 - p}`;
+        el.classList.toggle("idle", p >= 1);
         return;
       }
 
@@ -60,6 +61,8 @@ export function HeroSymbol() {
       // po spojení se horní znak vytratí (zůstane dolní zářící)
       const fade = Math.min(Math.max((t - 0.9) / 0.1, 0), 1);
       el.style.opacity = (1 - fade).toFixed(3);
+      // neviditelný znak → schovat a pauznout flicker (viz .hero-symbol.idle)
+      el.classList.toggle("idle", fade >= 1);
 
       // „wow“ záblesk ve chvíli spojení (na dolním znaku). Třída žije na
       // <body> — Reveal přepisuje className na .about-symbol při každém

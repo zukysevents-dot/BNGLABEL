@@ -3,8 +3,8 @@ import { getLocale } from "@/lib/getLocale";
 
 /**
  * Pruh nad patičkou — oficiální distribuci zajišťuje Warner Music CZ & SK.
- * Logo (wordmark s textem) je bílé na černém pozadí → přes `mix-blend-mode:
- * screen` černá splyne s tmavým webem a zůstane jen bílé logo + text.
+ * Logo je čisté průhledné PNG (bílý wordmark, bez JPEG artefaktů) — sedí na
+ * jakémkoli pozadí bez blend-mode triků.
  */
 export async function Distribution() {
   const t = getDict(await getLocale());
@@ -15,8 +15,11 @@ export async function Distribution() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className="distribution-logo"
-        src="/warner-music.jpg"
+        src="/warner-music.png"
         alt="Warner Music Czech Republic & Slovakia"
+        width={440}
+        height={189}
+        loading="lazy"
       />
     </section>
   );

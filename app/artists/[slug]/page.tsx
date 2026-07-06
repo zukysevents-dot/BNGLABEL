@@ -56,23 +56,26 @@ export default async function ArtistPage({
       <Nav locale={locale} nav={t.nav} />
       <div className="artist-view">
         <div className="artist-page">
-          <Link href="/#artists" className="ap-back">
-            <svg viewBox="0 0 24 24" aria-hidden>
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            {t.artist.back}
-          </Link>
+          <Reveal>
+            <Link href="/#artists" className="ap-back">
+              <svg viewBox="0 0 24 24" aria-hidden>
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              {t.artist.back}
+            </Link>
+          </Reveal>
 
-          <Reveal className="ap-hero">
-            <div className="ap-photo">
+          {/* vstupní kaskáda: foto naskočí první, texty s jemným odstupem */}
+          <div className="ap-hero">
+            <Reveal className="ap-photo">
               {artist.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={artist.image} alt={artist.name} />
               ) : (
                 artist.initials
               )}
-            </div>
-            <div className="ap-info">
+            </Reveal>
+            <Reveal className="ap-info" delay={1}>
               <div className="ap-genre-tag">{genre}</div>
               <h1 className="ap-name">{artist.name}</h1>
               <p className="ap-bio">{bio}</p>
@@ -106,8 +109,8 @@ export default async function ArtistPage({
                   </a>
                 )}
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
 
           {topTracks.length > 0 && (
             <>

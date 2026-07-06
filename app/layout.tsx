@@ -76,9 +76,10 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://open.spotify.com" />
         <link rel="preconnect" href="https://i.scdn.co" />
         <link rel="dns-prefetch" href="https://open.spotify.com" />
-        {/* bez JS nesmí preloader zakrývat web ani hero nadpis čekat na .pre-done */}
+        {/* bez JS nesmí preloader zakrývat web, hero nadpis čekat na .pre-done
+            ani scroll-reveal držet obsah neviditelný */}
         <noscript>
-          <style>{`.preloader{display:none}.hero-title .hl>span{animation:none;transform:none}`}</style>
+          <style>{`.preloader{display:none}.hero-title .hl>span{animation:none;transform:none}.fi,.fi .track-row{opacity:1;transform:none}`}</style>
         </noscript>
         <Preloader />
         <ScrollProgress />

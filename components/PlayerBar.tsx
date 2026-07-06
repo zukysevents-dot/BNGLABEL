@@ -54,6 +54,13 @@ export function PlayerBar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [state]);
 
+  // otevřená lišta nesmí trvale překrývat spodek stránky (patičku) —
+  // obsah dostane odpovídající spodní odsazení (viz body.player-open)
+  useEffect(() => {
+    document.body.classList.toggle("player-open", Boolean(state));
+    return () => document.body.classList.remove("player-open");
+  }, [state]);
+
   return (
     <div className={`player-bar ${state ? "open" : ""}`} aria-hidden={!state}>
       {state && (
@@ -80,7 +87,9 @@ export function PlayerBar() {
             onClick={() => setState(null)}
             aria-label="Zavřít přehrávač"
           >
-            ✕
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
           </button>
         </>
       )}

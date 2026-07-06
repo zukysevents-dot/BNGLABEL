@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { Monogram } from "@/components/Monogram";
 
+/** Preloader se hraje jen jednou za session — vracející se návštěvník jde rovnou na web. */
+const SESSION_KEY = "bng-preloader-shown";
+
 /**
  * Úvodní načítací obrazovka — logo Bonghemia se ukáže, pak DOLETÍ na pozici
  * navigačního loga vlevo nahoře (zmenší se přesně na něj), pozadí se rozplyne
@@ -16,14 +19,28 @@ export function Preloader() {
   const markRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    // opakovaná návštěva v rámci session → žádná opona, rovnou odemknout web
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(SESSION_KEY) === "1";
+    } catch {
+      /* private mode apod. — preloader se prostě přehraje */
+    }
+    if (seen) {
+      document.documentElement.classList.add("pre-done");
+      // setState mimo tělo efektu (timeout 0) — žádný kaskádový render
+      const skip = setTimeout(() => setStage("gone"), 0);
+      return () => clearTimeout(skip);
+    }
+
     const reduce = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     )?.matches;
     document.body.style.overflow = "hidden";
 
-    const showMs = reduce ? 200 : 900;
-    const flyMs = reduce ? 320 : 850; // doba od startu přeletu do zmizení
-    const igniteDelay = 600; // kdy logo „dosedne" a navigační se rozsvítí
+    const showMs = reduce ? 200 : 600;
+    const flyMs = reduce ? 320 : 780; // doba od startu přeletu do zmizení
+    const igniteDelay = 520; // kdy logo „dosedne" a navigační se rozsvítí
 
     const navMark = document.querySelector<HTMLElement>(".nav-logo-mark");
     let ignTimer: ReturnType<typeof setTimeout> | undefined;
@@ -57,6 +74,11 @@ export function Preloader() {
     const t2 = setTimeout(() => {
       setStage("gone");
       document.body.style.overflow = "";
+      try {
+        sessionStorage.setItem(SESSION_KEY, "1");
+      } catch {
+        /* bez storage se opona ukáže znovu — neškodné */
+      }
       cleanupTimer = setTimeout(
         () => navMark?.classList.remove("ignite"),
         300,

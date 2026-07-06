@@ -1,5 +1,6 @@
 import { ReleaseCard } from "@/components/ReleaseCard";
 import { Reveal } from "@/components/Reveal";
+import { contact } from "@/data/artists";
 import { getDict } from "@/lib/dictionaries";
 import { getLocale } from "@/lib/getLocale";
 import { getLabelLatestReleases } from "@/lib/spotify";
@@ -22,7 +23,7 @@ export async function Releases() {
             </h2>
           </div>
           <a
-            href="https://open.spotify.com"
+            href={contact.spotifyUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="link-sm"

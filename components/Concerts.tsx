@@ -7,7 +7,7 @@ export async function Concerts() {
   const t = getDict(await getLocale()).concerts;
 
   return (
-    <section className="concerts s" style={{ borderBottom: "1px solid var(--line)" }}>
+    <section id="live" className="concerts s">
       <div className="max">
         <Reveal className="releases-head">
           <div>
@@ -25,11 +25,12 @@ export async function Concerts() {
             <div className="concert-row" key={`${c.date}-${i}`}>
               <div className="concert-date">
                 {c.date}
-                <span>{c.day}</span>
+                {c.day && <span>{c.day}</span>}
               </div>
               <div>
                 <div className="concert-name">{c.name}</div>
-                <div className="concert-venue">{c.venue}</div>
+                {/* chybějící venue → elegantní „bude upřesněno" místo prázdné díry */}
+                <div className="concert-venue">{c.venue || t.tba}</div>
               </div>
               <div className="concert-city">{c.city}</div>
               <div className="concert-artists">{c.artists}</div>
@@ -42,7 +43,8 @@ export async function Concerts() {
                   rel={c.ticket.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="concert-ticket"
                 >
-                  {t.tickets}
+                  {/* odkaz na Instagram/info ≠ prodej vstupenek → poctivý popisek */}
+                  {c.linkType === "info" ? t.info : t.tickets}
                 </a>
               )}
             </div>

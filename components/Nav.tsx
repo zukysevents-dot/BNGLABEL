@@ -16,18 +16,34 @@ export function Nav({
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("");
 
   // Fallback, kdyby prop nedorazil (např. při HMR / neúplném renderu) — Nav nikdy nespadne.
   const t = nav ?? getDict(locale).nav;
 
   const links = [
-    { href: "/#about", label: t.label },
-    { href: "/#artists", label: t.artists },
-    { href: "/#releases", label: t.releases },
+    { href: "/#about", id: "about", label: t.label },
+    { href: "/#artists", id: "artists", label: t.artists },
+    { href: "/#releases", id: "releases", label: t.releases },
+    { href: "/#live", id: "live", label: t.live },
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    // scroll-spy: aktivní je poslední sekce, jejíž horní hrana prošla třetinou
+    // viewportu. Na stránkách bez sekcí (detail umělce) se nic nezvýrazňuje.
+    const sections = ["about", "artists", "releases", "live"]
+      .map((id) => document.getElementById(id))
+      .filter((s): s is HTMLElement => s !== null);
+
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      const marker = window.innerHeight * 0.34;
+      let current = "";
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= marker) current = s.id;
+      }
+      setActive(current);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -53,7 +69,9 @@ export function Nav({
         <ul className="nav-links">
           {links.map((l) => (
             <li key={l.href}>
-              <Link href={l.href}>{l.label}</Link>
+              <Link href={l.href} className={active === l.id ? "active" : ""}>
+                {l.label}
+              </Link>
             </li>
           ))}
           <li>

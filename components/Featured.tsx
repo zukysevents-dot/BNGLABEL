@@ -64,7 +64,7 @@ export async function Featured() {
             Apple Music
           </a>
           <a href={youtubeUrl} className="pltf" target="_blank" rel="noopener noreferrer">
-            YouTube ↗
+            YouTube
           </a>
         </div>
       </Reveal>

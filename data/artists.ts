@@ -77,6 +77,8 @@ export interface Concert {
   artists: string;
   /** Odkaz na vstupenky; `#` nebo soldOut → bez prokliku. */
   ticket: string;
+  /** „info" → odkaz nevede na prodej vstupenek (např. Instagram) → popisek „Info →". */
+  linkType?: "tickets" | "info";
   soldOut: boolean;
 }
 
@@ -120,8 +122,11 @@ export const artists: Artist[] = [
       { type: "Single", title: "Šepkám", year: "2025", bg: "#12100f", cover: "https://i.scdn.co/image/ab67616d0000b273f968f741eb0ec0efd9f76802" },
       { type: "EP", title: "CHATA", year: "2025", bg: "#0f1410", cover: "https://i.scdn.co/image/ab67616d0000b273e4a4f73a301959613ac31653" },
       { type: "Single", title: "Život je Art", year: "2024", bg: "#141210", cover: "https://i.scdn.co/image/ab67616d0000b2737894d5782489a58de2ed844b" },
-      { type: "Single", title: "NECHAJ MA ÍSŤ", year: "2023", bg: "#120f14", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab" },
-      { type: "Single", title: "Čo chcem mať", year: "2023", bg: "#0f1014", cover: "https://i.scdn.co/image/ab67616d0000b273c27eeefb1bdec12d34af46ab" },
+      /* obaly singlů 2023 nejsou k dispozici (URL alba 2026 by byla duplicitní
+         a matoucí) → null = elegantní on-brand fallback. S reálnými Spotify
+         credentials se doplní správné obaly automaticky. */
+      { type: "Single", title: "NECHAJ MA ÍSŤ", year: "2023", bg: "#120f14", cover: null },
+      { type: "Single", title: "Čo chcem mať", year: "2023", bg: "#0f1014", cover: null },
       { type: "Album", title: "SLOW LOW", year: "2022", bg: "#14100a", cover: "https://i.scdn.co/image/ab67616d0000b273d858efcbc2842076542bb1c9" },
       { type: "Single", title: "Sami Sebou", year: "2022", bg: "#0a1014", cover: "https://i.scdn.co/image/ab67616d0000b273d858efcbc2842076542bb1c9" },
     ],
@@ -230,7 +235,7 @@ export const featuredSingle = {
 };
 
 export const concerts: Concert[] = [
-  { date: "25. 7.", day: "", name: "WARM UP Festival TLAK", venue: "", city: "", artists: "", ticket: "https://instagram.com/festival_tlak", soldOut: false },
+  { date: "25. 7.", day: "So", name: "WARM UP Festival TLAK", venue: "", city: "", artists: "", ticket: "https://instagram.com/festival_tlak", linkType: "info", soldOut: false },
   { date: "14. 8.", day: "Čt", name: "Festival TLAK 2026", venue: "Beach Club Zátoka", city: "Žermanická přehrada", artists: "58G, Rest, Maniak + další", ticket: "https://www.festivaltlak.cz", soldOut: false },
 ];
 

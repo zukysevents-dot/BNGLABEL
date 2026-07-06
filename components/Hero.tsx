@@ -1,8 +1,13 @@
 import { HeroSymbol } from "@/components/HeroSymbol";
 import { Reveal } from "@/components/Reveal";
 import { contact } from "@/data/artists";
+import { getDict } from "@/lib/dictionaries";
+import { getLocale } from "@/lib/getLocale";
 
-export function Hero() {
+export async function Hero() {
+  const locale = await getLocale();
+  const t = getDict(locale).hero;
+
   return (
     <section className="hero">
       <HeroSymbol />
@@ -11,7 +16,7 @@ export function Hero() {
         <span className="hero-top-tag">
           {contact.city} — Est. {contact.established}
         </span>
-        <span className="hero-top-tag">Independent Music Label</span>
+        <span className="hero-top-tag">{t.tag}</span>
       </div>
 
       <div className="hero-bottom">
@@ -25,7 +30,7 @@ export function Hero() {
         </h1>
         <Reveal className="hero-meta" delay={2}>
           <a href="#about" className="hero-scroll">
-            Scroll down <span className="hero-scroll-line" />
+            {t.scroll} <span className="hero-scroll-line" />
           </a>
         </Reveal>
       </div>
