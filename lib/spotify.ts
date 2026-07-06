@@ -14,8 +14,10 @@ import {
   artists,
   latestReleases,
   releasesByArtist,
+  topTracksByArtist,
   type Release,
   type ReleaseType,
+  type Track,
 } from "@/data/artists";
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -74,6 +76,14 @@ type SpotifyAlbum = {
   artists: { name: string }[];
 };
 
+type SpotifyTrack = {
+  id: string;
+  name: string;
+  album: { images: { url: string }[] };
+  artists: { name: string }[];
+  external_urls: { spotify: string };
+};
+
 function normalizeType(albumType: string): ReleaseType {
   if (albumType === "album") return "Album";
   if (albumType === "single") return "Single";
@@ -121,6 +131,41 @@ export async function getArtistLatestReleases(
       .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate));
   } catch {
     return releasesByArtist(artistSlug);
+  }
+}
+
+/** Top tracky umělce dle poslechovosti na Spotify. Bez creds vrací mock (diskografii). */
+export async function getArtistTopTracks(
+  spotifyArtistId: string,
+  artistSlug: string,
+  limit = 5,
+): Promise<Track[]> {
+  const token = await getAccessToken();
+  if (!token || !spotifyArtistId) return topTracksByArtist(artistSlug).slice(0, limit);
+
+  try {
+    const res = await fetch(
+      `${API_BASE}/artists/${spotifyArtistId}/top-tracks?market=CZ`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        next: { revalidate: 3600 },
+      },
+    );
+    if (!res.ok) return topTracksByArtist(artistSlug).slice(0, limit);
+
+    const data = (await res.json()) as { tracks: SpotifyTrack[] };
+    const artist = artists.find((a) => a.slug === artistSlug);
+
+    return data.tracks.slice(0, limit).map((track) => ({
+      title: track.name,
+      cover: track.album.images[0]?.url ?? null,
+      artistName: artist?.name ?? track.artists[0]?.name ?? "",
+      artistSlug,
+      artistSpotifyId: spotifyArtistId,
+      spotifyUrl: track.external_urls.spotify,
+    }));
+  } catch {
+    return topTracksByArtist(artistSlug).slice(0, limit);
   }
 }
 

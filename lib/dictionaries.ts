@@ -48,8 +48,7 @@ const cs = {
   distribution: "Distribuci zajišťuje",
   artist: {
     back: "Zpět na roster",
-    latest: "Poslední release",
-    openSpotify: "Otevřít na Spotify",
+    topTracks: "Top tracky",
     listen: "Poslech",
     openSpotifyArrow: "Otevřít na Spotify →",
   },
@@ -95,8 +94,7 @@ const en: Dict = {
   distribution: "Distributed by",
   artist: {
     back: "Back to roster",
-    latest: "Latest release",
-    openSpotify: "Open on Spotify",
+    topTracks: "Top Tracks",
     listen: "Listen",
     openSpotifyArrow: "Open on Spotify →",
   },

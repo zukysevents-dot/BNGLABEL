@@ -3,15 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArtistTracks } from "@/components/ArtistTracks";
-import { Cover } from "@/components/Cover";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { PlayButton } from "@/components/PlayButton";
 import { Reveal } from "@/components/Reveal";
+import { TopTracks } from "@/components/TopTracks";
 import { artists, getArtist } from "@/data/artists";
 import { getDict } from "@/lib/dictionaries";
 import { getLocale } from "@/lib/getLocale";
-import { getArtistLatestReleases } from "@/lib/spotify";
+import { getArtistLatestReleases, getArtistTopTracks } from "@/lib/spotify";
 
 // ISR: detail se přegeneruje max. jednou za hodinu → nová alba/tracky umělce
 // ze Spotify se objeví automaticky, vždy seřazené od nejnovějšího.
@@ -46,11 +45,11 @@ export default async function ArtistPage({
   const bio = locale === "en" ? artist.bioEn ?? artist.bio : artist.bio;
   const genre = locale === "en" ? artist.genreEn ?? artist.genre : artist.genre;
 
-  const releases = await getArtistLatestReleases(
-    artist.spotifyArtistId,
-    artist.slug,
-  );
-  const latest = releases[0];
+  const [releases, topTracks] = await Promise.all([
+    getArtistLatestReleases(artist.spotifyArtistId, artist.slug),
+    getArtistTopTracks(artist.spotifyArtistId, artist.slug, 5),
+  ]);
+  const latestReleases = releases.slice(0, 3);
 
   return (
     <>
@@ -110,55 +109,45 @@ export default async function ArtistPage({
             </div>
           </Reveal>
 
-          {latest && (
-            <Reveal className="ap-latest">
-              <div className="ap-latest-cover">
-                <Cover
-                  src={latest.cover}
-                  alt={`Obal: ${latest.title}`}
-                  fallback={latest.type}
-                  sizes="(max-width: 900px) 100vw, 360px"
-                />
-                <PlayButton
-                  artistId={latest.artistSpotifyId}
-                  spotifyUrl={latest.spotifyUrl}
-                  label={`${latest.title} — ${latest.artistName}`}
-                />
-              </div>
-              <div className="ap-latest-info">
-                <div className="ap-latest-badge">{t.artist.latest}</div>
-                <div className="ap-latest-meta">
-                  {latest.type} · {latest.year}
-                </div>
-                <h2 className="ap-latest-title">{latest.title}</h2>
+          {topTracks.length > 0 && (
+            <>
+              <Reveal className="ap-section-title">
+                <span>{t.artist.topTracks}</span>
                 <a
-                  href={latest.spotifyUrl}
+                  href={artist.spotifyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ap-link primary"
+                  className="link-sm"
                 >
-                  {t.artist.openSpotify}
+                  {t.artist.openSpotifyArrow}
                 </a>
-                {/* ODLOŽENO: sem přijde odkaz na nejnovější videoklip, až bude web online */}
-              </div>
-            </Reveal>
+              </Reveal>
+
+              <Reveal>
+                <TopTracks tracks={topTracks} />
+              </Reveal>
+            </>
           )}
 
-          <Reveal className="ap-section-title">
-            <span>{t.artist.listen}</span>
-            <a
-              href={artist.spotifyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-sm"
-            >
-              {t.artist.openSpotifyArrow}
-            </a>
-          </Reveal>
+          {latestReleases.length > 0 && (
+            <>
+              <Reveal className="ap-section-title">
+                <span>{t.artist.listen}</span>
+                <a
+                  href={artist.spotifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-sm"
+                >
+                  {t.artist.openSpotifyArrow}
+                </a>
+              </Reveal>
 
-          <Reveal>
-            <ArtistTracks releases={releases} />
-          </Reveal>
+              <Reveal>
+                <ArtistTracks releases={latestReleases} />
+              </Reveal>
+            </>
+          )}
         </div>
       </div>
       <Footer />

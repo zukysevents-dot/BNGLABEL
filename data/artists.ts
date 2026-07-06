@@ -34,6 +34,18 @@ export interface Release extends DiscographyItem {
   releaseDate: string;
 }
 
+/** Top track umělce (dle poslechovosti na Spotify). */
+export interface Track {
+  title: string;
+  cover: string | null;
+  artistName: string;
+  artistSlug: string;
+  /** Spotify Artist ID — pro vložený přehrávač (embed). */
+  artistSpotifyId: string;
+  /** URL konkrétního tracku (reálná data) nebo profilu umělce (mock fallback). */
+  spotifyUrl: string;
+}
+
 export interface Artist {
   id: number;
   slug: string;
@@ -265,5 +277,23 @@ export function releasesByArtist(slug: string): Release[] {
     spotifyUrl: artist.spotifyUrl,
     // mock nemá plné datum → odhad z roku (reálná data ze Spotify mají přesné)
     releaseDate: `${d.year}-01-01`,
+  }));
+}
+
+/**
+ * Mock fallback pro top tracky (bez Spotify credentials). Diskografie nemá
+ * track-level data, takže se použije jako zástupný výběr — stejný kompromis
+ * jako u `releasesByArtist` (spotifyUrl vede na profil umělce, ne konkrétní track).
+ */
+export function topTracksByArtist(slug: string): Track[] {
+  const artist = getArtist(slug);
+  if (!artist) return [];
+  return artist.discography.map((d) => ({
+    title: d.title,
+    cover: d.cover,
+    artistName: artist.name,
+    artistSlug: artist.slug,
+    artistSpotifyId: artist.spotifyArtistId,
+    spotifyUrl: artist.spotifyUrl,
   }));
 }
