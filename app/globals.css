@@ -113,9 +113,9 @@ html {
   background: rgba(255, 77, 170, 0.55);
 }
 
-/* NAV — po scrollu průsvitné „sklo": jemný brand gradient (stejné odstíny
-   jako mesh pozadí), blur se saturací ať barvy pozadí prosvítají sytější,
-   a filmové zrno (::after) pro kontinuitu s texturou webu.
+/* NAV — po scrollu čisté „liquid glass": silný blur se saturací (barvy
+   pozadí prosvítají sytější), lehký brand nádech a horní odlesk jako na
+   skutečném skle. Bez zrna — to patří jen do pozadí webu.
    POZOR: sklo žije na ::before, NE na <nav> samotném — backdrop-filter na
    navu by z něj udělal containing block pro fixed .mobile-menu (menu by se
    smrsklo na velikost lišty). Pseudo není předek, containing block nevznikne. */
@@ -133,7 +133,7 @@ nav {
   border-bottom: 1px solid transparent;
 }
 nav.scrolled {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 /* skleněná vrstva — fade přes opacity (levné, jediná kompozitní vlastnost) */
 nav::before {
@@ -143,35 +143,27 @@ nav::before {
   z-index: -1;
   pointer-events: none;
   background:
+    /* horní odlesk skla */
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0) 45%
+    ),
+    /* lehoučký brand nádech (odstíny mesh pozadí) */
     linear-gradient(
       to right,
-      rgba(255, 72, 122, 0.052),
-      rgba(138, 96, 196, 0.04) 50%,
-      rgba(222, 100, 204, 0.052)
+      rgba(255, 72, 122, 0.035),
+      rgba(138, 96, 196, 0.025) 50%,
+      rgba(222, 100, 204, 0.035)
     ),
-    rgba(10, 8, 13, 0.58);
-  backdrop-filter: blur(18px) saturate(150%);
+    rgba(10, 8, 13, 0.44);
+  backdrop-filter: blur(24px) saturate(165%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
   opacity: 0;
   transition: opacity 0.3s;
 }
 nav.scrolled::before {
   opacity: 1;
-}
-/* zrno na skle — stejná textura jako body::after, jen ožije se .scrolled */
-nav::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  mix-blend-mode: soft-light;
-  opacity: 0;
-  transition: opacity 0.3s;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-}
-nav.scrolled::after {
-  opacity: 0.45;
 }
 .nav-logo {
   font-family: var(--f-display);
@@ -445,6 +437,25 @@ nav.scrolled::after {
 .hero-symbol svg {
   width: 100%;
   height: auto;
+}
+/* Notebooky/Mac (~900–2100 px): nadpis je téměř přes celou šířku viewportu,
+   takže se se znakem MUSÍ potkat — znak proto ustoupí do role decentního
+   watermarku: menší, výš a s tlumeným obrysem bez blikání, ať neon neřeže
+   do písma. Na širokých monitorech (>2100 px) se vejdou vedle sebe a znak
+   zůstává v plné síle. */
+@media (min-width: 901px) and (max-width: 2100px) {
+  .hero-symbol {
+    width: min(32vw, 430px);
+    top: 44%;
+  }
+  .hero-symbol-glow {
+    animation: none;
+    opacity: 0.24;
+    filter: drop-shadow(0 0 3px rgba(255, 77, 170, 0.35));
+  }
+  .hero-symbol-inner {
+    color: rgba(255, 255, 255, 0.07);
+  }
 }
 /* plynulé blikání obrysu — 0 % i 100 % stejné = bez „divného" cuknutí na konci */
 @keyframes crestFlicker {
