@@ -49,7 +49,7 @@ const cs = {
   artist: {
     back: "Zpět na roster",
     topTracks: "Top tracky",
-    listen: "Poslech",
+    listen: "Poslední vydané",
     openSpotifyArrow: "Otevřít na Spotify →",
   },
 };
@@ -95,7 +95,7 @@ const en: Dict = {
   artist: {
     back: "Back to roster",
     topTracks: "Top Tracks",
-    listen: "Listen",
+    listen: "Latest releases",
     openSpotifyArrow: "Open on Spotify →",
   },
 };
