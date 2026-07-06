@@ -42,6 +42,9 @@ export function Preloader() {
           1,
         )}px) scale(${scale.toFixed(3)})`;
       }
+      // pozadí se začíná rozplývat → teprve TEĎ pusť hero nadpis (viz .pre-done
+      // v globals.css) — jinak celá jeho animace proběhne schovaná pod oponou
+      document.documentElement.classList.add("pre-done");
       setStage("fly");
       if (!reduce) {
         ignTimer = setTimeout(
@@ -66,6 +69,9 @@ export function Preloader() {
       if (ignTimer) clearTimeout(ignTimer);
       if (cleanupTimer) clearTimeout(cleanupTimer);
       document.body.style.overflow = "";
+      // pojistka: hero nadpis čeká na .pre-done — nesmí zůstat zamčený,
+      // ani kdyby se preloader odpojil dřív (HMR, rychlá navigace)
+      document.documentElement.classList.add("pre-done");
     };
   }, []);
 

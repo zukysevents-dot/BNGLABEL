@@ -76,6 +76,10 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://open.spotify.com" />
         <link rel="preconnect" href="https://i.scdn.co" />
         <link rel="dns-prefetch" href="https://open.spotify.com" />
+        {/* bez JS nesmí preloader zakrývat web ani hero nadpis čekat na .pre-done */}
+        <noscript>
+          <style>{`.preloader{display:none}.hero-title .hl>span{animation:none;transform:none}`}</style>
+        </noscript>
         <Preloader />
         <ScrollProgress />
         {children}

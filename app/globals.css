@@ -92,7 +92,33 @@ body > * {
   color: #0a0a0a;
 }
 
-/* NAV */
+/* tenký tmavý scrollbar s růžovým hoverem (Firefox přes scrollbar-color) */
+html {
+  scrollbar-color: rgba(255, 255, 255, 0.16) #0a0a0a;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 5px;
+  border: 2px solid #0a0a0a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 77, 170, 0.55);
+}
+
+/* NAV — po scrollu průsvitné „sklo": jemný brand gradient (stejné odstíny
+   jako mesh pozadí), blur se saturací ať barvy pozadí prosvítají sytější,
+   a filmové zrno (::after) pro kontinuitu s texturou webu.
+   POZOR: sklo žije na ::before, NE na <nav> samotném — backdrop-filter na
+   navu by z něj udělal containing block pro fixed .mobile-menu (menu by se
+   smrsklo na velikost lišty). Pseudo není předek, containing block nevznikne. */
 nav {
   position: fixed;
   top: 0;
@@ -103,13 +129,49 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 2rem 3rem;
-  transition: border-color 0.3s, background 0.3s;
+  transition: border-color 0.3s;
   border-bottom: 1px solid transparent;
 }
 nav.scrolled {
-  border-bottom: 1px solid var(--line);
-  background: rgba(10, 10, 10, 0.92);
-  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+/* skleněná vrstva — fade přes opacity (levné, jediná kompozitní vlastnost) */
+nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      rgba(255, 72, 122, 0.052),
+      rgba(138, 96, 196, 0.04) 50%,
+      rgba(222, 100, 204, 0.052)
+    ),
+    rgba(10, 8, 13, 0.58);
+  backdrop-filter: blur(18px) saturate(150%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+nav.scrolled::before {
+  opacity: 1;
+}
+/* zrno na skle — stejná textura jako body::after, jen ožije se .scrolled */
+nav::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+nav.scrolled::after {
+  opacity: 0.45;
 }
 .nav-logo {
   font-family: var(--f-display);
@@ -208,6 +270,27 @@ nav.scrolled {
 }
 .nav-links a:hover {
   color: var(--white);
+}
+/* gradientové podtržení — najíždí zleva, odjíždí doprava (premium „wipe") */
+.nav-links a:not(.nav-cta) {
+  position: relative;
+}
+.nav-links a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-links a:not(.nav-cta):hover::after,
+.nav-links a:not(.nav-cta):focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 .nav-cta {
   font-size: 0.7rem !important;
@@ -431,6 +514,12 @@ nav.scrolled {
   display: block;
   transform: translateY(115%);
   animation: heroRise 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  /* čeká zamčený, dokud preloader nezačne odkrývat web (.pre-done přidá
+     Preloader) — jinak celý rise proběhne neviditelně pod oponou */
+  animation-play-state: paused;
+}
+html.pre-done .hero-title .hl > span {
+  animation-play-state: running;
 }
 .hero-title .hl:nth-child(2) > span {
   animation-delay: 0.14s;
@@ -606,6 +695,19 @@ nav.scrolled {
   color: var(--accent);
   -webkit-text-stroke: 0px;
   text-shadow: 0 0 40px rgba(255, 77, 170, 0.6), 0 0 80px rgba(255, 77, 170, 0.2);
+  /* neon pomalu „dýchá" — jako vývěsní štít */
+  animation: jointBreath 4.5s ease-in-out infinite;
+}
+@keyframes jointBreath {
+  0%,
+  100% {
+    text-shadow: 0 0 40px rgba(255, 77, 170, 0.6),
+      0 0 80px rgba(255, 77, 170, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 52px rgba(255, 77, 170, 0.85),
+      0 0 110px rgba(255, 77, 170, 0.32);
+  }
 }
 .joint-statement:hover .joint-text:not(.joint-us) {
   color: rgba(255, 255, 255, 0.06);
@@ -631,7 +733,9 @@ nav.scrolled {
   color: var(--white);
   position: relative;
 }
-/* růžový „wow" záblesk ve chvíli, kdy se horní znak spojí s tímto (.flash) */
+/* růžový „wow" záblesk ve chvíli, kdy se horní znak spojí s tímto. Stav řídí
+   body.crest-lit (HeroSymbol) — třída na .about-symbol by nepřežila přepis
+   className Reveal komponentou. */
 .about-symbol::after {
   content: "";
   position: absolute;
@@ -649,10 +753,10 @@ nav.scrolled {
   opacity: 0;
   pointer-events: none;
 }
-.about-symbol.lit::after {
+body.crest-lit .about-symbol::after {
   animation: aboutBurst 0.8s ease-out;
 }
-.about-symbol.lit svg {
+body.crest-lit .about-symbol svg {
   animation: aboutPulse 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   /* zapnutá růžová záře — až když k logu dorazí horní znak */
   filter: drop-shadow(0 0 6px rgba(255, 77, 170, 0.63))
@@ -921,6 +1025,10 @@ nav.scrolled {
 }
 .rel {
   display: block;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rel:hover {
+  transform: translateY(-5px);
 }
 .rel:hover .rel-img-inner {
   transform: scale(1.03);
@@ -934,6 +1042,12 @@ nav.scrolled {
   margin-bottom: 1rem;
   position: relative;
   cursor: pointer;
+  /* ring přes box-shadow (žádný layout shift) — rozsvítí se s liftem karty */
+  transition: box-shadow 0.45s ease;
+}
+.rel:hover .rel-img {
+  box-shadow: 0 0 0 1px rgba(255, 77, 170, 0.28),
+    0 16px 44px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 77, 170, 0.12);
 }
 .rel-img-inner {
   width: 100%;
@@ -1803,6 +1917,33 @@ footer {
 .fi-d3 {
   transition-delay: 0.21s;
 }
+/* řádky track-listu naskakují kaskádou (jako karty releasů) — jemnější posun,
+   ať se nepere s revealem celého bloku */
+.fi .track-row {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
+}
+.fi.vis .track-row {
+  opacity: 1;
+  transform: none;
+}
+.fi.vis .track-row:nth-child(1) { transition-delay: 0.1s, 0.1s, 0s; }
+.fi.vis .track-row:nth-child(2) { transition-delay: 0.17s, 0.17s, 0s; }
+.fi.vis .track-row:nth-child(3) { transition-delay: 0.24s, 0.24s, 0s; }
+.fi.vis .track-row:nth-child(4) { transition-delay: 0.31s, 0.31s, 0s; }
+.fi.vis .track-row:nth-child(5) { transition-delay: 0.38s, 0.38s, 0s; }
+.fi.vis .track-row:nth-child(n + 6) { transition-delay: 0.45s, 0.45s, 0s; }
+@media (max-width: 600px) {
+  /* na mobilu menší dráha revealu — méně „skákavé", rychlejší dojem */
+  .fi {
+    transform: translateY(36px);
+  }
+  .fi.vis {
+    transform: none;
+  }
+}
 
 /* SPOTIFY PLAYER BAR (spodní lišta s přehrávačem) */
 .player-bar {
@@ -1815,9 +1956,17 @@ footer {
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 1rem;
-  background: rgba(10, 10, 10, 0.96);
-  backdrop-filter: blur(14px);
-  border-top: 1px solid var(--line);
+  /* stejné tintované sklo jako nav — vizuální kontinuita horní/dolní lišty */
+  background:
+    linear-gradient(
+      to right,
+      rgba(255, 72, 122, 0.045),
+      rgba(138, 96, 196, 0.035) 50%,
+      rgba(222, 100, 204, 0.045)
+    ),
+    rgba(10, 8, 13, 0.78);
+  backdrop-filter: blur(20px) saturate(140%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   transform: translateY(120%);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1893,35 +2042,46 @@ footer {
   margin-bottom: 4rem;
 }
 
-/* SCROLL PROGRESS (růžový pruh nahoře) */
+/* SCROLL PROGRESS (růžový pruh nahoře) — scaleX místo width: běží jen na
+   kompozitoru (žádný layout/paint každý frame scrollu) */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   height: 2px;
-  width: 0;
+  width: 100%;
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   box-shadow: 0 0 12px rgba(255, 77, 170, 0.6);
   z-index: 300;
   pointer-events: none;
-  transition: width 0.1s linear;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.1s linear;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .fi {
+  .fi,
+  .fi .track-row {
     opacity: 1;
     transform: none;
     filter: none;
     transition: none;
   }
+  .mobile-menu {
+    transition: none;
+  }
+  .scroll-progress {
+    transition: none;
+  }
   .hero-symbol-inner,
   .hero-symbol-glow,
-  .about-symbol.lit::after,
-  .about-symbol.lit svg,
-  .hero-scroll-line::after {
+  body.crest-lit .about-symbol::after,
+  body.crest-lit .about-symbol svg,
+  .hero-scroll-line::after,
+  .joint-text.joint-us {
     animation: none;
   }
   .hero-symbol {
@@ -1963,17 +2123,32 @@ footer {
     inset: 0;
     top: 0;
     z-index: 150;
-    background: var(--bg);
+    /* sklo s brand tintem — blur funguje, protože nav sám backdrop-filter
+       nemá (sklo lišty žije na nav::before, viz komentář u NAV) */
+    background:
+      linear-gradient(
+        168deg,
+        rgba(255, 72, 122, 0.05),
+        rgba(138, 96, 196, 0.04) 50%,
+        rgba(222, 100, 204, 0.05)
+      ),
+      rgba(8, 7, 11, 0.92);
+    backdrop-filter: blur(24px) saturate(140%);
     padding: 6rem 1.5rem 2rem;
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.35s ease, opacity 0.35s ease;
+    /* visibility až PO doběhnutí animace — zavřené menu nesmí chytat focus */
+    visibility: hidden;
+    transition: transform 0.35s ease, opacity 0.35s ease,
+      visibility 0s linear 0.35s;
   }
   .mobile-menu.open {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
+    transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s;
   }
   .mobile-menu a {
     display: block;

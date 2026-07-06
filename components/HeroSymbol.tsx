@@ -21,12 +21,11 @@ export function HeroSymbol() {
     )?.matches;
     if (reduce) {
       // bez animací necháme dolní znak rovnou rozsvícený (statika)
-      document.querySelector(".about-symbol")?.classList.add("lit");
-      return;
+      document.body.classList.add("crest-lit");
+      return () => document.body.classList.remove("crest-lit");
     }
 
     const target = document.querySelector<SVGElement>(".about-symbol svg");
-    const targetWrap = target?.closest(".about-symbol") as HTMLElement | null;
     let raf = 0;
     let merged = false;
 
@@ -62,13 +61,15 @@ export function HeroSymbol() {
       const fade = Math.min(Math.max((t - 0.9) / 0.1, 0), 1);
       el.style.opacity = (1 - fade).toFixed(3);
 
-      // „wow“ záblesk ve chvíli spojení (na dolním znaku)
+      // „wow“ záblesk ve chvíli spojení (na dolním znaku). Třída žije na
+      // <body> — Reveal přepisuje className na .about-symbol při každém
+      // protnutí viewportu a imperativní třídu by tiše smazal.
       if (t >= 0.94 && !merged) {
         merged = true;
-        targetWrap?.classList.add("lit");
+        document.body.classList.add("crest-lit");
       } else if (t < 0.85 && merged) {
         merged = false;
-        targetWrap?.classList.remove("lit");
+        document.body.classList.remove("crest-lit");
       }
     };
     const onScroll = () => {
@@ -83,6 +84,7 @@ export function HeroSymbol() {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      document.body.classList.remove("crest-lit");
     };
   }, []);
 
